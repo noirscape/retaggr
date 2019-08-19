@@ -36,7 +36,7 @@ class ReverseSearch:
                 self.accessible_boorus["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key, self.config.min_score)
             if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
                 self.accessible_boorus["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
-            self.accessible_boorus["iqdb"] = Iqdb(self.min_score)
+            self.accessible_boorus["iqdb"] = Iqdb(self.config.min_score)
 
         self.accessible_boorus["paheal"] = Paheal()
 
