@@ -19,5 +19,5 @@ setup(
         "Source": "https://github.com/booru-utils/reverse-search",
         "Tracker": "https://github.com/booru-utils/reverse-search/issues",
     },
-    packages=find_packages(exclude=['docs', 'tests*'])
+    packages=find_packages('src')
 )
