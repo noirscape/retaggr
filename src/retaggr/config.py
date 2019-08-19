@@ -14,7 +14,7 @@ class ReverseSearchConfig:
     :type e621_username: str
 
     :param app_name: The name of your application (required for :class:`E621`).
-    :type e621_app_name: str
+    :type app_name: str
     :param version: The version of your application (required for :class:`E621`).
     :type version: float
 

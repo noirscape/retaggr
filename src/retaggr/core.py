@@ -2,6 +2,9 @@ from retaggr.config import ReverseSearchConfig
 
 # Boorus
 from retaggr.boorus.danbooru import Danbooru
+from retaggr.boorus.e621 import E621
+from retaggr.boorus.iqdb import Iqdb
+from retaggr.boorus.paheal import Paheal
 
 # Exceptions
 from retaggr.errors import MissingAPIKeysException, NotAValidBooruException
@@ -17,14 +20,25 @@ class ReverseSearch:
     :param config: The config object.
     :type config: ReverseSearchConfig
     """
-    _all_boorus = ["danbooru"]
+    _all_boorus = [
+        "danbooru",
+        "e621",
+        "iqdb",
+        "paheal"
+        ]
 
     def __init__(self, config):
         self.config = config
         self.accessible_boorus = {}
 
-        if hasattr(self.config, "danbooru_username", "danbooru_api_key"):
-            self.accessible_boorus["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key)
+        if hasattr(self.config, "min_score"):
+            if hasattr(self.config, "danbooru_username") and hasattr(self.config, "danbooru_api_key"):
+                self.accessible_boorus["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key, self.config.min_score)
+            if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
+                self.accessible_boorus["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
+            self.accessible_boorus["iqdb"] = Iqdb(self.min_score)
+
+        self.accessible_boorus["paheal"] = Paheal()
 
     async def reverse_search(self, url, callback=None, download=False):
         r"""Reverse searches all available boorus for ``url``.
@@ -44,8 +58,12 @@ class ReverseSearch:
         :return: A list of tags
         :rtype: List[str]
         """
+        tags = []
         for booru in self.accessible_boorus:
-            await self.search_image(booru, url)
+            tags += await self.search_image(booru, url)
+            if callback:
+                callback(booru)
+        return tags
 
 
     async def search_image(self, booru, url):
