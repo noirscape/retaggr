@@ -41,7 +41,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # Set the master doc
-master_doc = "index.rst"
+master_doc = "index"
 
 # -- Options for HTML output -------------------------------------------------
 
