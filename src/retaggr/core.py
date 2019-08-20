@@ -41,9 +41,7 @@ class ReverseSearch:
         self.accessible_boorus["paheal"] = Paheal()
 
     async def reverse_search(self, url, callback=None, download=False):
-        r"""Reverse searches all available boorus for ``url``.
-
-        This automatically silences any and all MissingAPIKeysExceptions that could occur due to lack of initialization.
+        r"""Reverse searches all accessible boorus for ``url``.
 
         ``callback`` is an optional parameter that can refer to a method with a single parameter (``callback(name)``).
 
@@ -53,13 +51,16 @@ class ReverseSearch:
         :type url: str
         :param callback: Callback function.
         :type callback: Optional[function]
-        :param download: Run searches on boorus that require a file download.
+        :param download: Run searches on boorus that require a file download. Defaults to False.
         :type download: Optional[bool]
         :return: A list of tags
         :rtype: Set[str]
         """
         tags = []
         for booru in self.accessible_boorus:
+            if self.accessible_boorus[booru].download_required:
+                if not download:
+                    continue
             tags.extend(await self.search_image(booru, url))
             if callback:
                 callback(booru)

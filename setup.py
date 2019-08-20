@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="retaggr",
-    version="0.1.0a",
+    version="1.0.0",
     url="https://github.com/booru-utils/reverse-search",
     license="LGPLv3",
     description="Reverse image searching utility for images.",
@@ -10,7 +10,7 @@ setup(
     author="Valentijn 'noirscape' V.",
     author_email="neko@catgirlsin.space",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python :: 3",
     ],
