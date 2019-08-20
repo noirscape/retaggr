@@ -2,6 +2,7 @@ import pytest
 import retaggr
 import os
 
+# Grab the relevant keys from the environment
 danbooru_username = os.environ.get('DANBOORU_USERNAME', None)
 danbooru_api_key = os.environ.get('DANBOORU_API_KEY', None)
 e621_username = os.environ.get('E621_USERNAME', None)
@@ -14,3 +15,15 @@ config = retaggr.ReverseSearchConfig(danbooru_username=danbooru_username, danboo
 def test_core_creation():
     core = retaggr.ReverseSearch(config)
     assert core.config == config
+
+@pytest.mark.asyncio
+async def test_core_search_image_not_a_booru():
+    core = retaggr.ReverseSearch(config)
+    with pytest.raises(retaggr.NotAValidBooruException):
+        await core.search_image("nO", "irrelevant")
+
+@pytest.mark.asyncio
+async def test_core_search_image_not_all_api_keys():
+    core = retaggr.ReverseSearch(retaggr.ReverseSearchConfig()) # Since we need a core without the config for this
+    with pytest.raises(retaggr.MissingAPIKeysException):
+        await core.search_image("danbooru", "irrelevant")
