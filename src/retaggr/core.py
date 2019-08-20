@@ -82,4 +82,4 @@ class ReverseSearch:
             raise NotAValidBooruException("%s is not a valid booru", booru)
         if booru not in self.accessible_boorus:
             raise MissingAPIKeysException("%s is misisng one or more needed API keys. Check the documentation.")
-        self.accessible_boorus[booru].search_image(url)
+        return await self.accessible_boorus[booru].search_image(url)
