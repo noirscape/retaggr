@@ -16,8 +16,9 @@ setup(
     ],
     keywords="reverse image search booru",
     project_urls={
-        "Source": "https://github.com/booru-utils/reverse-search",
-        "Tracker": "https://github.com/booru-utils/reverse-search/issues",
+        "Source": "https://github.com/booru-utils/retaggr",
+        "Tracker": "https://github.com/booru-utils/retaggr/issues",
+        "Documentation": "https://retaggr.rtfd.org"
     },
     packages=find_packages('src')
 )
