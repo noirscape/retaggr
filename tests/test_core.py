@@ -38,4 +38,5 @@ async def test_image_core():
 async def test_reverse_search():
     core = retaggr.ReverseSearch(config)
     tags = await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
-    assert tags == {'hi_res', 'unconvincing_armor', 'helmet', 'solo', 'dark_souls_3', 'fromsoftware', 'big_butt', 'anus', 'not_furry', 'simple_background', 'dancer_of_the_boreal_valley', 'pussy', 'female', 'humanoid', 'sinensian', 'butt', 'nude', 'dark_souls', 'video_games', '<3', 'headgear', 'armor'}
+    print(tags)
+    assert tags == {'not_furry', 'highres', 'blue_skin', 'simple_background', 'video_games', 'big_butt', '1girl', 'nude', 'female', 'faceless', 'anus', 'humanoid', 'gauntlets', 'looking_back', 'fromsoftware', 'dark_souls_3', 'dark_souls_iii', 'butt', 'dancer_of_the_boreal_valley', 'mask', 'thighs', '<3', 'fat_mons', 'helmet', 'pussy', 'headgear', 'huge_ass', 'ass', 'unconvincing_armor', 'armor', 'sinensian', 'dark_souls', 'veil', 'solo', 'thick_thighs', 'breasts', 'hi_res'}
