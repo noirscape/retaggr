@@ -56,14 +56,14 @@ class ReverseSearch:
         :param download: Run searches on boorus that require a file download.
         :type download: Optional[bool]
         :return: A list of tags
-        :rtype: List[str]
+        :rtype: Set[str]
         """
         tags = []
         for booru in self.accessible_boorus:
-            tags += await self.search_image(booru, url)
+            tags.extend(await self.search_image(booru, url))
             if callback:
                 callback(booru)
-        return tags
+        return set(tags)
 
 
     async def search_image(self, booru, url):

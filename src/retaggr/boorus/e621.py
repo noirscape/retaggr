@@ -58,7 +58,7 @@ class E621(Booru):
                     # Check tags from api
                     r = await requests.get(self.e621_api, headers=self.user_agent, params={"id": post_id})
                     json = await r.json()
-                    results.append(json['tags'].split())
+                    results = json['tags'].split()
             except:
                 pass
             row = row + 5

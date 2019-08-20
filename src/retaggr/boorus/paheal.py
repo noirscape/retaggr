@@ -30,7 +30,7 @@ class Paheal(Booru):
         tags = [] # pointless but just in case it's zero, it won't error out.
         for post in xml_tree:
             for tag in post.attrib["tags"].split(): 
-                tags.append(tag)
+                tags.append(tag.lower())
         return tags
 
     async def search_tag(self, tag: str):

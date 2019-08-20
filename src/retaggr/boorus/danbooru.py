@@ -26,18 +26,18 @@ class Danbooru(Booru):
         self.api_key = api_key
 
     async def search_image(self, url):
-        url = self.host + "/iqdb_queries.json"
+        iqdb_url = self.host + "/iqdb_queries.json"
         loop = asyncio.get_event_loop()
-        r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, url, params={"url":url}, auth=(self.username, self.api_key)))
+        r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, iqdb_url, params={"url":url}, auth=(self.username, self.api_key)))
         json = r.json()
         if 'success' in json:
             if not json['success']: # pragma: no cover
                 return []
 
         results = []
-        if json['score'] > self.min_score:
-            results = json["post"]["tag_string"].split()
-
+        if len(json) > 0:
+            if json[0]['score'] > self.min_score:
+                results = json[0]["post"]["tag_string"].split()
         return results
 
     async def search_tag(self, tag: str):
