@@ -48,10 +48,9 @@ class Iqdb(Booru):
                 # Create tags list
                 tags_str = tables[row-2].xpath("//a/img")
                 temp_tags = tags_str[0].get('alt').split("Tags: ", 1)[1]
-                tags = [x.lower().replace(',', '') for x in temp_tags] # This is because IQDB searches zerochan, a site that doesn't sanitize it's tags (adding capitalization and commas which are illegal in tag names.)
-
+                tags = [x.lower().replace(',', '') for x in temp_tags.split()] # This is because IQDB searches zerochan, a site that doesn't sanitize it's tags (adding capitalization and commas which are illegal in tag names.)
                 if percent > self.min_score:
-                    results.append(tags.split())
+                    results.extend(tags)
             except:
                 pass
             row = row + 6
