@@ -31,7 +31,6 @@ class E621(Booru):
     def __init__(self, username, app_name, version, min_score):
         self.user_agent = {"User-Agent": f"{app_name}/{version} (by {username} on e621)"}
         self.min_score = min_score
-        raise NotImplementedError("Expand this method to include all needed keys.")
 
     async def search_image(self, url: str):
         """Reverse search the Booru for ``url``.
