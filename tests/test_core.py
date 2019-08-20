@@ -32,10 +32,10 @@ async def test_core_search_image_not_all_api_keys():
 async def test_image_core():
     core = retaggr.ReverseSearch(config)
     tags = await core.search_image("paheal", "https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
-    assert tags == ['Dancer_of_the_Boreal_Valley', 'Dark_Souls', 'Dark_Souls_3', 'Sinensian']
+    assert tags == ['dancer_of_the_boreal_valley', 'dark_souls', 'dark_souls_3', 'sinensian']
 
 @pytest.mark.asyncio
 async def test_reverse_search():
     core = retaggr.ReverseSearch(config)
-    tags = await core.search_image("paheal", "https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
-    assert tags == ['Dancer_of_the_Boreal_Valley', 'Dark_Souls', 'Dark_Souls_3', 'Sinensian']
+    tags = await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
+    assert tags == {'hi_res', 'unconvincing_armor', 'helmet', 'solo', 'dark_souls_3', 'fromsoftware', 'big_butt', 'anus', 'not_furry', 'simple_background', 'dancer_of_the_boreal_valley', 'pussy', 'female', 'humanoid', 'sinensian', 'butt', 'nude', 'dark_souls', 'video_games', '<3', 'headgear', 'armor'}
