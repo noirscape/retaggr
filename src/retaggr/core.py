@@ -53,18 +53,18 @@ class ReverseSearch:
         :type callback: Optional[function]
         :param download: Run searches on boorus that require a file download. Defaults to False.
         :type download: Optional[bool]
-        :return: A list of tags
+        :return: A set of tags
         :rtype: Set[str]
         """
-        tags = []
+        tags = set()
         for booru in self.accessible_boorus:
             if self.accessible_boorus[booru].download_required:
                 if not download:
                     continue
-            tags.extend(await self.search_image(booru, url))
+            tags.update(await self.search_image(booru, url))
             if callback:
                 callback(booru)
-        return set(tags)
+        return tags
 
 
     async def search_image(self, booru, url):
@@ -76,11 +76,11 @@ class ReverseSearch:
         :type url: str
         :raises MissingAPIKeysException: Required keys in config object missing.
         :raises NotAValidBooruException: The passed in booru is not a valid booru.
-        :return: A list of tags
-        :rtype: List[str]
+        :return: A set of tags
+        :rtype: Set[str]
         """
         if booru not in self._all_boorus:
             raise NotAValidBooruException("%s is not a valid booru", booru)
         if booru not in self.accessible_boorus:
             raise MissingAPIKeysException("%s is misisng one or more needed API keys. Check the documentation.")
-        return await self.accessible_boorus[booru].search_image(url)
+        return set(await self.accessible_boorus[booru].search_image(url))

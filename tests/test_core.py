@@ -32,11 +32,12 @@ async def test_core_search_image_not_all_api_keys():
 async def test_image_core():
     core = retaggr.ReverseSearch(config)
     tags = await core.search_image("paheal", "https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
-    assert tags == ['dancer_of_the_boreal_valley', 'dark_souls', 'dark_souls_3', 'sinensian']
+    print(tags)
+    assert tags == {'dark_souls', 'sinensian', 'dark_souls_3', 'dancer_of_the_boreal_valley'}
 
 @pytest.mark.asyncio
 async def test_reverse_search():
     core = retaggr.ReverseSearch(config)
-    tags = await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
+    tags = await core.reverse_search("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png")
     print(tags)
-    assert tags == {'not_furry', 'highres', 'blue_skin', 'simple_background', 'video_games', 'big_butt', '1girl', 'nude', 'female', 'faceless', 'anus', 'humanoid', 'gauntlets', 'looking_back', 'fromsoftware', 'dark_souls_3', 'dark_souls_iii', 'butt', 'dancer_of_the_boreal_valley', 'mask', 'thighs', '<3', 'fat_mons', 'helmet', 'pussy', 'headgear', 'huge_ass', 'ass', 'unconvincing_armor', 'armor', 'sinensian', 'dark_souls', 'veil', 'solo', 'thick_thighs', 'breasts', 'hi_res'}
+    assert tags == {'hollow_knight', 'wide_hips', 'clothing', 'featureless', 'blush', 'bottomless', 'female', 'hornet_(hollow_knight)', 'video_games', 'clothed', '2017', 'thick_thighs', 'mostly_nude', 'weapon', 'kilinah', 'melee_weapon', 'looking_at_viewer', 'signature', 'insect', 'hi_res', 'solo', '<3', 'breasts', 'arthropod', 'black_skin', 'non-mammal_breasts'}
