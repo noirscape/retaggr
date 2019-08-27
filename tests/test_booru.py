@@ -9,7 +9,8 @@ danbooru_api_key = os.environ.get('DANBOORU_API_KEY', None)
 e621_username = os.environ.get('E621_USERNAME', None)
 app_name = os.environ.get('APP_NAME', None)
 version = os.environ.get('APP_VERSION', None)
-if not all([danbooru_username, danbooru_api_key, e621_username, app_name, version]):
+saucenao_api_key = os.environ.get('SAUCENAO_API_KEY', None)
+if not all([danbooru_username, danbooru_api_key, e621_username, app_name, version, saucenao_api_key]):
     raise ValueError("Missing Environment variables")
 
 @pytest.mark.asyncio
@@ -35,3 +36,9 @@ async def test_paheal():
     booru = boorus.paheal.Paheal()
     tags = await booru.search_image("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
     assert 'dancer_of_the_boreal_valley' in tags
+
+@pytest.mark.asyncio
+async def test_saucenao():
+    booru = boorus.saucenao.SauceNao(saucenao_api_key)
+    tags = await booru.search_image("https://danbooru.donmai.us/data/__priscilla_the_crossbreed_souls_from_software_and_etc_drawn_by_setz__a3ed9fbb7e972145dfe98269e0be1ace.jpg")
+    assert 'priscilla_the_crossbreed' in tags

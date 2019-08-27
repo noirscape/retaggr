@@ -56,5 +56,6 @@ Before running your tests, add the following environment variables and install `
 - E621_USERNAME
 - APP_NAME
 - APP_VERSION
+- SAUCENAO_API_KEY
 
 After that you can execute the tests with pytest.
