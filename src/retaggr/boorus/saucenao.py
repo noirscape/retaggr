@@ -1,4 +1,6 @@
 from retaggr.boorus.base import Booru
+from retaggr.errors import NotAvailableSearchOption
+from aiohttp_requests import requests
 
 class SauceNao(Booru):
     """Reverse searches the SauceNao API and then does additional matching.
@@ -14,3 +16,9 @@ class SauceNao(Booru):
 
     def __init__(self, api_key):
         self.api_key = api_key
+
+    def search_image(self, url):
+        pass
+
+    def search_tag(self, tag):
+        raise NotAvailableSearchOption("This engine cannot search tags.")
