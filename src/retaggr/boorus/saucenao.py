@@ -17,8 +17,14 @@ class SauceNao(Booru):
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def search_image(self, url):
-        pass
+    async def search_image(self, url):
+        request_url = "https://saucenao.com/search.php"
+        params = {
+            "db": "999", # No clever bitmasking -> need help with how to do that.
+            "api_key": self.api_key,
+            "output_type": "2" # 2 is the JSON API
+        }
+        await requests.get(request_url, params=params)
 
-    def search_tag(self, tag):
+    async def search_tag(self, tag):
         raise NotAvailableSearchOption("This engine cannot search tags.")
