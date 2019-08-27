@@ -46,7 +46,7 @@ class SauceNao(Booru):
         self.api_key = api_key
 
     async def search_image(self, url):
-        return self.search_image_source(url)["tags"]
+        return await self.search_image_source(url)["tags"]
 
     async def search_image_source(self, url):
         request_url = "https://saucenao.com/search.php"
@@ -79,8 +79,8 @@ class SauceNao(Booru):
         source = None
         source_priority = len(self.source_indexes) # No result priority is 1 above the least wanted result
         for entry in source_results:
-            list_index = source_indexes.index(entry["header"]["index_id"])
-            if source_priority < list_index: # If our exsting result priority is lower than the current result...
+            list_index = self.source_indexes.index(entry["header"]["index_id"])
+            if list_index < source_priority: # If our exsting result priority is lower than the current result...
                 source = entry["data"]["ext_urls"][0] # We update the source with that result
                 source_priority = list_index # And we update the priority
 
