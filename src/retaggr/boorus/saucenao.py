@@ -45,7 +45,8 @@ class SauceNao(Booru):
         self.api_key = api_key
 
     async def search_image(self, url):
-        return await self.search_image_source(url)["tags"]
+        result =  await self.search_image_source(url)
+        return result["tags"]
 
     async def search_image_source(self, url):
         request_url = "https://saucenao.com/search.php"
