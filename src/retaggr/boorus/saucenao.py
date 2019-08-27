@@ -16,7 +16,7 @@ class SauceNao(Booru):
     download_required = False
 
 
-    tag_indexes = set([5, 9, 12, 26, 29])
+    tag_indexes = set([9, 12, 26])
     """Tag indexes we can parse.
 
     Valid index numbers can be found at https://saucenao.com/status.html .
@@ -26,7 +26,6 @@ class SauceNao(Booru):
     * 9: Danbooru
     * 12: Yande.re
     * 26: Konachan
-    * 29: E621
     """
 
     source_indexes = [5, 16, 37, 34]
@@ -84,6 +83,28 @@ class SauceNao(Booru):
                 source = entry["data"]["ext_urls"][0] # We update the source with that result
                 source_priority = list_index # And we update the priority
 
-        # TODO: Implement tag searching here.
+        # See my comment above source_results as to what I'm doing here.
+        tag_results_list = [entry for entry in json["results"] if entry["header"]["index_id"] in self.tag_indexes and float(entry["header"]["similarity"]) > base_similarity]
 
-        return {"tags": None, "source": source}
+        # Unlike the source, these require specific lookups based on their ID. As a result, I'll rearrange the results to a dict.
+        tag_results = {}
+        for entry in tag_results_list:
+            tag_results[entry["header"]["index_id"]] = entry
+
+        # Kinda looks stupid, but whatever.
+        tags = []
+        for index_id, entry in tag_results.items():
+            if index_id == 9: # Danbooru
+                r = fuck_aiohttp.get("https://danbooru.donmai.us/posts/" + str(entry["data"]["danbooru_id"]) + ".json")
+                j = r.json()
+                tags += j["tag_string"].split()
+            if index_id == 12: # Yande.re
+                r = fuck_aiohttp.get("https://yande.re/post.json", params={"tags": "id:" + str(entry["data"]["yandere_id"])})
+                j = r.json()
+                tags += j[0]["tags"].split()
+            if index_id == 26: # Konachan
+                r = fuck_aiohttp.get("http://konachan.com/post.json", params={"tags": "id:" + str(entry["data"]["konachan_id"])})
+                j = r.json()
+                tags += j[0]["tags"].split()
+
+        return {"tags": tags, "source": source}
