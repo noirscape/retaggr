@@ -56,7 +56,7 @@ class SauceNao(Booru):
             "url": url
         }
         r = fuck_aiohttp.get(request_url, params=params)
-        return r.json()
+        return await index_parser(r.json())
 
     async def search_tag(self, tag):
         raise NotAvailableSearchOption("This engine cannot search tags.")
