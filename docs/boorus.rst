@@ -32,6 +32,12 @@ Paheal
     :members:
 
 
+SauceNao
+--------
+
+.. autoclass:: retaggr.boorus.SauceNao
+    :members:
+
 Base
 ------
 
