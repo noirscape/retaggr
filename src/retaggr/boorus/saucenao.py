@@ -35,6 +35,7 @@ class SauceNao(Booru):
     Valid index numbers can be found at https://saucenao.com/status.html .
 
     List of indexes we use for sources:
+
     * 5: Pixiv (preferred, low quantity/risk of reuploads)
     * 16: FAKKU (official redistribution)
     * 37: MangaDex (not official redistribution, but metadata is accurate)
