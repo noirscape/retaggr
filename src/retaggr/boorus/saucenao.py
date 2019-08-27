@@ -24,7 +24,8 @@ class SauceNao(Booru):
             "api_key": self.api_key,
             "output_type": "2" # 2 is the JSON API
         }
-        await requests.get(request_url, params=params)
+        r = await requests.get(request_url, params=params)
+        return r.json()
 
     async def search_tag(self, tag):
         raise NotAvailableSearchOption("This engine cannot search tags.")
