@@ -8,9 +8,10 @@ danbooru_api_key = os.environ.get('DANBOORU_API_KEY', None)
 e621_username = os.environ.get('E621_USERNAME', None)
 app_name = os.environ.get('APP_NAME', None)
 version = os.environ.get('APP_VERSION', None)
-if not all([danbooru_username, danbooru_api_key, e621_username, app_name, version]):
+saucenao_api_key = os.environ.get('SAUCENAO_API_KEY', None)
+if not all([danbooru_username, danbooru_api_key, e621_username, app_name, version, saucenao_api_key]):
     raise ValueError("Missing Environment variables")
-config = retaggr.ReverseSearchConfig(danbooru_username=danbooru_username, danbooru_api_key=danbooru_api_key, e621_username=e621_username, app_name=app_name, version=version, min_score=80.0)
+config = retaggr.ReverseSearchConfig(danbooru_username=danbooru_username, danbooru_api_key=danbooru_api_key, saucenao_api_key=saucenao_api_key, e621_username=e621_username, app_name=app_name, version=version, min_score=80.0)
 
 def test_core_creation():
     core = retaggr.ReverseSearch(config)
@@ -39,3 +40,13 @@ async def test_reverse_search():
     core = retaggr.ReverseSearch(config)
     tags = await core.reverse_search("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png")
     assert 'hornet_(hollow_knight)' in tags
+
+@pytest.mark.asyncio
+async def test_reverse_search_callback():
+    core = retaggr.ReverseSearch(config)
+    calls = 0
+    async def callback(booru):
+        nonlocal calls
+        calls += 1
+    await core.reverse_search("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png", callback=callback)
+    assert calls > 0

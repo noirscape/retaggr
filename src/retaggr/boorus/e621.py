@@ -63,12 +63,7 @@ class E621(Booru):
                     json = await r.json()
                     results["tags"] = json['tags'].split()
                     results["source"] = json['source']
-            except:
+            except: # pragma: no cover
                 pass
             row = row + 5
         return results
-
-    async def search_tag(self, tag):
-        """Reverse search the booru for tag data.
-        """
-        raise NotImplementedError("Expand this method to include the logic needed to reverse search.")

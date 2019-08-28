@@ -44,8 +44,3 @@ class Danbooru(Booru):
                 results["tags"] = json[0]["post"]["tag_string"].split()
                 results["source"] = json[0]["post"]["source"]
         return results
-
-    async def search_tag(self, tag):
-        """Reverse search the booru for tag data.
-        """
-        raise NotImplementedError("Expand this method to include the logic needed to reverse search.")

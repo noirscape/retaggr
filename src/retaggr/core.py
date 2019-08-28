@@ -51,16 +51,9 @@ class ReverseSearch:
             Use :meth:`ReverseSearch.search_image_source` instead
         """
         tags = set()
-        for booru in self.accessible_boorus:
-            if self.accessible_boorus[booru].download_required:
-                if not download:
-                    continue
-            result = await self.search_image(booru, url)
-            tags.update(result["tags"])
-            if callback:
-                await callback(booru)
+        result = await self.search_image_source(url, callback)
+        tags.update(result["tags"])
         return tags
-
 
     async def search_image_source(self, url, callback=None, download=False):
         """
@@ -98,7 +91,8 @@ class ReverseSearch:
                     continue
             result = await self.search_image(booru, url)
             tags.update(result["tags"])
-            source.update(result["source"])
+            if result["source"]:
+                source.update(result["source"])
             if callback:
                 await callback(booru)
         return {"tags": tags, "source": source}
