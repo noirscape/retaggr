@@ -18,7 +18,10 @@ class ReverseSearchConfig:
     :param version: The version of your application (required for :class:`E621`).
     :type version: float
 
-    :param min_score: Minimum search match percentage needed (required for ALL boorus except :class:`Paheal`).
+    :param saucenao_api_key: An API key for :class:`SauceNao`.
+    :type saucenao_api_key: str
+
+    :param min_score: Minimum search match percentage needed (required for ALL boorus except :class:`Paheal` and :class:`SauceNao`).
     :type min_score: float
     """
     def __init__(self, **kwargs):

@@ -26,10 +26,14 @@ class Iqdb(Booru):
         self.min_score = min_score
         self.ua = UserAgent()
 
-    async def search_image(self, url: str):
-        """Reverse search the Booru for ``url``.
+    async def search_image_source(self, url):
         """
-        results = []
+
+        """
+        results = {
+            "tags": [],
+            "source": None
+        }
 
         params = {"url" : url}
         loop = asyncio.get_event_loop()
@@ -51,14 +55,14 @@ class Iqdb(Booru):
                 temp_tags = tags_str[0].get('alt').split("Tags: ", 1)[1]
                 tags = [x.lower().replace(',', '') for x in temp_tags.split()] # This is because IQDB searches zerochan, a site that doesn't sanitize it's tags (adding capitalization and commas which are illegal in tag names.)
                 if percent > self.min_score:
-                    results.extend(tags)
+                    results["tags"].extend(tags)
             except:
                 pass
             row = row + 6
 
         return results
 
-    async def search_tag(self, tag: str):
+    async def search_tag(self, tag):
         """Reverse search the booru for tag data.
         """
         raise NotAvailableSearchOption("This engine cannot search tags.")

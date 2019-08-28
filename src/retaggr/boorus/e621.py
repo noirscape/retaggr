@@ -32,12 +32,15 @@ class E621(Booru):
         self.user_agent = {"User-Agent": f"{app_name}/{version} (by {username} on e621)"}
         self.min_score = min_score
 
-    async def search_image(self, url: str):
+    async def search_image_source(self, url):
         """Reverse search the Booru for ``url``.
 
         CRUCIAL: This implementation blocks for 1 second in order to not overload the e621 API.
         """
-        results = []
+        results = {
+            "tags": [],
+            "source": None
+        }
 
         params = {"url" : url}
 
@@ -58,13 +61,14 @@ class E621(Booru):
                     # Check tags from api
                     r = await requests.get(self.e621_api, headers=self.user_agent, params={"id": post_id})
                     json = await r.json()
-                    results = json['tags'].split()
+                    results["tags"] = json['tags'].split()
+                    results["source"] = json['source']
             except:
                 pass
             row = row + 5
         return results
 
-    async def search_tag(self, tag: str):
+    async def search_tag(self, tag):
         """Reverse search the booru for tag data.
         """
         raise NotImplementedError("Expand this method to include the logic needed to reverse search.")

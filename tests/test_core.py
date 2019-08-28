@@ -31,8 +31,8 @@ async def test_core_search_image_not_all_api_keys():
 @pytest.mark.asyncio
 async def test_image_core():
     core = retaggr.ReverseSearch(config)
-    tags = await core.search_image("paheal", "https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
-    assert 'dancer_of_the_boreal_valley' in tags
+    result = await core.search_image("paheal", "https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
+    assert 'dancer_of_the_boreal_valley' in result["tags"]
 
 @pytest.mark.asyncio
 async def test_reverse_search():

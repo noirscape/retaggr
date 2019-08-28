@@ -17,9 +17,12 @@ class Paheal(Booru):
     def __init__(self):
         pass
 
-    async def search_image(self, url: str):
-        """Reverse search the Booru for ``url``.
-        """
+    async def search_image_source(self, url):
+        results = {
+            "tags": [],
+            "source": None
+        }
+
         m = hashlib.md5()
         r = await requests.get(url)
         async for data in r.content.iter_chunked(8192):
@@ -28,13 +31,13 @@ class Paheal(Booru):
         paheal_request = await requests.get(f"http://rule34.paheal.net/api/danbooru/find_posts?md5={md5_hash}")
         xml_tree = ET.fromstring(await paheal_request.text())
 
-        tags = [] # pointless but just in case it's zero, it won't error out.
         for post in xml_tree:
             for tag in post.attrib["tags"].split(): 
-                tags.append(tag.lower())
-        return tags
+                results["tags"].append(tag.lower())
+            results["source"] = post.attrib["source"]
+        return results
 
-    async def search_tag(self, tag: str):
+    async def search_tag(self, tag):
         """Reverse search the booru for tag data.
         """
         raise NotAvailableSearchOption("This engine cannot search tags.")

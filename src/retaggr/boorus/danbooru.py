@@ -25,7 +25,12 @@ class Danbooru(Booru):
         self.username = username
         self.api_key = api_key
 
-    async def search_image(self, url):
+    async def search_image_source(self, url):
+        results = {
+            "tags": [],
+            "source": None
+        }
+
         iqdb_url = self.host + "/iqdb_queries.json"
         loop = asyncio.get_event_loop()
         r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, iqdb_url, params={"url":url}, auth=(self.username, self.api_key)))
@@ -34,13 +39,13 @@ class Danbooru(Booru):
             if not json['success']: # pragma: no cover
                 return []
 
-        results = []
         if len(json) > 0:
             if json[0]['score'] > self.min_score:
-                results = json[0]["post"]["tag_string"].split()
+                results["tags"] = json[0]["post"]["tag_string"].split()
+                results["source"] = json[0]["post"]["source"]
         return results
 
-    async def search_tag(self, tag: str):
+    async def search_tag(self, tag):
         """Reverse search the booru for tag data.
         """
         raise NotImplementedError("Expand this method to include the logic needed to reverse search.")
