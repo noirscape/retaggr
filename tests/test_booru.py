@@ -32,13 +32,31 @@ async def test_iqdb():
     assert 'biwa_lute' in tags
 
 @pytest.mark.asyncio
+async def test_iqdb_tag():
+    booru = boorus.iqdb.Iqdb(80.0)
+    with pytest.raises(retaggr.NotAvailableSearchException):
+        await booru.search_tag("doesnt matter")
+
+@pytest.mark.asyncio
 async def test_paheal():
     booru = boorus.paheal.Paheal()
     tags = await booru.search_image("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
     assert 'dancer_of_the_boreal_valley' in tags
 
 @pytest.mark.asyncio
+async def test_paheal_tag():
+    booru = boorus.paheal.Paheal()
+    with pytest.raises(retaggr.NotAvailableSearchException):
+        await booru.search_tag("doesnt matter")
+
+@pytest.mark.asyncio
 async def test_saucenao():
     booru = boorus.saucenao.SauceNao(saucenao_api_key)
     tags = await booru.search_image("https://danbooru.donmai.us/data/__priscilla_the_crossbreed_souls_from_software_and_etc_drawn_by_setz__a3ed9fbb7e972145dfe98269e0be1ace.jpg")
     assert 'priscilla_the_crossbreed' in tags
+
+@pytest.mark.asyncio
+async def test_saucenao_tag():
+    booru = boorus.saucenao.SauceNao(saucenao_api_key)
+    with pytest.raises(retaggr.NotAvailableSearchException):
+        await booru.search_tag("doesnt matter")
