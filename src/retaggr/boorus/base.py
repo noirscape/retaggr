@@ -10,7 +10,7 @@ class Booru:
     host = None
     download_required = False
 
-    def __init__(self):
+    def __init__(self): # pragma: no cover
         raise NotImplementedError("Expand this method to include all needed keys.")
 
     async def search_image(self, url):
@@ -21,12 +21,12 @@ class Booru:
         result = await self.search_image_source(url)
         return result["tags"]
 
-    async def search_tag(self, tag):
+    async def search_tag(self, tag): # pragma: no cover
         """Reverse search the booru for tag data.
         """
         raise NotImplementedError("Expand this method to include the logic needed to reverse search.")
 
-    async def search_image_source(self, url):
+    async def search_image_source(self, url): # pragma: no cover
         """Reverse search the booru for ``url``.
 
         This method should return a dict with two keys:

@@ -1,5 +1,5 @@
 from retaggr.boorus.base import Booru
-from retaggr.errors import NotAvailableSearchOption
+from retaggr.errors import NotAvailableSearchException
 import requests as fuck_aiohttp
 
 class SauceNao(Booru):
@@ -56,7 +56,7 @@ class SauceNao(Booru):
         return await self.index_parser(r.json())
 
     async def search_tag(self, tag):
-        raise NotAvailableSearchOption("This engine cannot search tags.")
+        raise NotAvailableSearchException("This engine cannot search tags.")
 
     async def index_parser(self, json):
         """Parse the output from a succesful saucenao search to retrieve data from specific indexes.
@@ -95,11 +95,11 @@ class SauceNao(Booru):
                 r = fuck_aiohttp.get("https://danbooru.donmai.us/posts/" + str(entry["data"]["danbooru_id"]) + ".json")
                 j = r.json()
                 tags += j["tag_string"].split()
-            if index_id == 12: # Yande.re
+            if index_id == 12: # Yande.re # pragma: no cover
                 r = fuck_aiohttp.get("https://yande.re/post.json", params={"tags": "id:" + str(entry["data"]["yandere_id"])})
                 j = r.json()
                 tags += j[0]["tags"].split()
-            if index_id == 26: # Konachan
+            if index_id == 26: # Konachan # pragma: no cover
                 r = fuck_aiohttp.get("http://konachan.com/post.json", params={"tags": "id:" + str(entry["data"]["konachan_id"])})
                 j = r.json()
                 tags += j[0]["tags"].split()

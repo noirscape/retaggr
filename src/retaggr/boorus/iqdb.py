@@ -1,5 +1,5 @@
 from retaggr.boorus.base import Booru
-from retaggr.errors import NotAvailableSearchOption
+from retaggr.errors import NotAvailableSearchException
 
 # External imports
 import asyncio
@@ -27,9 +27,6 @@ class Iqdb(Booru):
         self.ua = UserAgent()
 
     async def search_image_source(self, url):
-        """
-
-        """
         results = {
             "tags": [],
             "source": None
@@ -56,7 +53,7 @@ class Iqdb(Booru):
                 tags = [x.lower().replace(',', '') for x in temp_tags.split()] # This is because IQDB searches zerochan, a site that doesn't sanitize it's tags (adding capitalization and commas which are illegal in tag names.)
                 if percent > self.min_score:
                     results["tags"].extend(tags)
-            except:
+            except: # pragma: no cover
                 pass
             row = row + 6
 
@@ -65,4 +62,4 @@ class Iqdb(Booru):
     async def search_tag(self, tag):
         """Reverse search the booru for tag data.
         """
-        raise NotAvailableSearchOption("This engine cannot search tags.")
+        raise NotAvailableSearchException("This engine cannot search tags.")

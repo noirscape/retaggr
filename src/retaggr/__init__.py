@@ -1,3 +1,3 @@
 from .core import ReverseSearch
 from .config import ReverseSearchConfig
-from .errors import MissingAPIKeysException, NotAValidBooruException
+from .errors import MissingAPIKeysException, NotAValidBooruException, NotAvailableSearchException

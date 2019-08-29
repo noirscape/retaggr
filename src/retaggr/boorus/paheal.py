@@ -1,5 +1,5 @@
 from retaggr.boorus.base import Booru
-from retaggr.errors import NotAvailableSearchOption
+from retaggr.errors import NotAvailableSearchException
 
 # External imports
 import hashlib
@@ -40,4 +40,4 @@ class Paheal(Booru):
     async def search_tag(self, tag):
         """Reverse search the booru for tag data.
         """
-        raise NotAvailableSearchOption("This engine cannot search tags.")
+        raise NotAvailableSearchException("This engine cannot search tags.")

@@ -5,5 +5,5 @@ class MissingAPIKeysException(Exception):
 class NotAValidBooruException(Exception):
     """Raised if the passed in booru does not exist."""
 
-class NotAvailableSearchOption(Exception):
+class NotAvailableSearchException(Exception):
     """This engine is not capable of searching this option."""
