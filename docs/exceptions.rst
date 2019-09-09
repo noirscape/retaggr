@@ -11,3 +11,6 @@ Exceptions
 
 .. autoclass:: NotAvailableSearchException
     :members:
+
+.. autoclass:: EngineCooldownException
+    :members:

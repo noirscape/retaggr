@@ -1,5 +1,8 @@
+import datetime
+import asyncio
+
 from retaggr.boorus.base import Booru
-from retaggr.errors import NotAvailableSearchException
+from retaggr.errors import NotAvailableSearchException, EngineCooldownException
 import requests as fuck_aiohttp
 
 class SauceNao(Booru):
@@ -41,10 +44,19 @@ class SauceNao(Booru):
     * 34: DeviantART (not preferred, large number of art theft and reuploads)
     """
 
+    is_cooling_short = False
+    """Used if the engine is being ratelimited for the next 30 seconds. If this ratelimit is hit, the engine will sleep for 30 seconds before the next request."""
+    is_cooling_long = False
+    """Used if the engine is being ratelimited for the next 24 hours. If this ratelimit is hit, the engine will raise an :class:`retaggr.errors.EngineCooldownException`."""
+
+    last_request = None
+    """The last request date the engine made to saucenao. Used to regulate the ratelimits."""
+
     def __init__(self, api_key):
         self.api_key = api_key
+        self.last_request = datetime.datetime.now()
 
-    async def search_image_source(self, url):
+    async def search_image(self, url):
         request_url = "https://saucenao.com/search.php"
         params = {
             "db": "999", # No clever bitmasking -> need help with how to do that.
@@ -52,8 +64,15 @@ class SauceNao(Booru):
             "output_type": "2", # 2 is the JSON API,
             "url": url
         }
-        r = fuck_aiohttp.get(request_url, params=params)
-        return await self.index_parser(r.json())
+        if self.is_cooling_short: # pragma: no cover
+            await self.sleep_until_ratelimit(35) # 35 seconds = no issue
+            self.is_cooling_short = False
+        if not self.is_cooling_long: # pragma: no cover
+            r = fuck_aiohttp.get(request_url, params=params)
+            self.last_request = datetime.datetime.now()
+            return await self.index_parser(r.json())
+        else: # pragma: no cover
+            raise EngineCooldownException(until=self.last_request + datetime.timedelta(hours=24))
 
     async def search_tag(self, tag):
         raise NotAvailableSearchException("This engine cannot search tags.")

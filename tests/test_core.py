@@ -45,7 +45,7 @@ async def test_reverse_search():
 async def test_reverse_search_callback():
     core = retaggr.ReverseSearch(config)
     calls = 0
-    async def callback(booru):
+    async def callback(booru, tags, source):
         nonlocal calls
         calls += 1
     await core.reverse_search("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png", callback=callback)

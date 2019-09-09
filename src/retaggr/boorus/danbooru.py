@@ -25,7 +25,7 @@ class Danbooru(Booru):
         self.username = username
         self.api_key = api_key
 
-    async def search_image_source(self, url):
+    async def search_image(self, url):
         results = {
             "tags": [],
             "source": None

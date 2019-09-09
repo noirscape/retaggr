@@ -55,19 +55,21 @@ class ReverseSearch:
         tags.update(result["tags"])
         return tags
 
-    async def search_image_source(self, url, callback=None, download=False):
+    async def search_image_source(self, url, callback=None, download=False, skip_saucenao=False):
         """
         Reverse searches all accessible boorus for ``url``.
 
         .. note::
-            Callback is a callback function that can be passed in. This should be an async
-            function and should accept one parameter which is the booru name.
+            Callback is a callback function that can be passed in. This can be used to keep track of
+            progress for certain methods and functions.
 
             .. code-block:: python
                :linenos:
 
-                async def callback(booru):
-                    print(booru)
+                async def callback(booru, tags, source):
+                    print("This booru was searched: %s", booru)
+                    print("These tags were found: %s", tags)
+                    print("This source was found: %s", source)
 
                 # Callback will be called each time a search finishes.
                 rs.reverse_search(url, callback)
@@ -94,7 +96,7 @@ class ReverseSearch:
             if result["source"]:
                 source.update(result["source"])
             if callback:
-                await callback(booru)
+                await callback(booru, set(result["tags"]), result["source"])
         return {"tags": tags, "source": source}
 
     async def search_image(self, booru, url):
@@ -113,4 +115,4 @@ class ReverseSearch:
             raise NotAValidBooruException("%s is not a valid booru", booru)
         if booru not in self.accessible_boorus:
             raise MissingAPIKeysException("%s is misisng one or more needed API keys. Check the documentation.")
-        return await self.accessible_boorus[booru].search_image_source(url)
+        return await self.accessible_boorus[booru].search_image(url)

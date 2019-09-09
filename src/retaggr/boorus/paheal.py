@@ -17,7 +17,7 @@ class Paheal(Booru):
     def __init__(self):
         pass
 
-    async def search_image_source(self, url):
+    async def search_image(self, url):
         results = {
             "tags": [],
             "source": None

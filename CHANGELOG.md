@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Made callback more comprehensive.
+- Made SauceNao account for ratelimits properly.
+- Made E621 account for ratelimits properly.
+- Added new helper method to base API.
+- search_image changes:
+  - Removed deprected search_image
+  - Renamed search_image_source to search_image.
+  - As a result of this, search_image_source is effectively removed
+
 ## [1.2.0] - 2019-08-29
 
 - Expanded base engine class to also permit searching for sources.

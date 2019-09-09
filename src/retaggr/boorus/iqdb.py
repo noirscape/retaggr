@@ -26,7 +26,7 @@ class Iqdb(Booru):
         self.min_score = min_score
         self.ua = UserAgent()
 
-    async def search_image_source(self, url):
+    async def search_image(self, url):
         results = {
             "tags": [],
             "source": None
