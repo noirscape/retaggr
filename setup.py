@@ -1,15 +1,9 @@
 from setuptools import setup, find_packages
 import subprocess
 
-def get_version():
-    out_val = subprocess.getoutput("git describe --long | sed 's/-/-r/;'")
-    if len(subprocess.getoutput("git status -s")) != 0:
-        out_val += "-dirty"
-    return out_val
-
 setup(
     name="retaggr",
-    version=get_version(),
+    version="2.0.0",
     url="https://github.com/booru-utils/reverse-search",
     license="LGPLv3",
     description="Reverse image searching utility for images.",
