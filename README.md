@@ -11,5 +11,5 @@ See the documentation for details.
 from retaggr import ReverseSearch, ReverseSearchConfig
 config = ReverseSearchConfig(min_score=80.0)
 rsearch = ReverseSearch(config)
-tags = asyncio.run(rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg"))
+result = asyncio.run(rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg"))
 ```
