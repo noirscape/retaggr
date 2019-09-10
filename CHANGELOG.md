@@ -9,16 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed callback to be more comprehensive.
 - Changed SauceNao to account for ratelimits properly.
 - Changed E621 to accunt for ratelimits properly.
-- Added new helper method to base API to handle ratelimits.
-- search_image changes:
+- Changed responses to namedtuples. Namedtuples can be better documented and permit dotted access.
+  - Two new classes: ImageResult and ReverseResult.
+  - Classes share attributes but differ in types on said attributes.
+- Changed search_image in API classes:
   - Removed deprecated search_image
   - Renamed search_image_source to search_image.
-  - As a result of this, search_image_source is effectively removed
+  - As a result of this, search_image_source is effectively removed.
+- Changed reverse_search in core class:
+  - Removed deprecated reverse_search
+  - Renamed search_image_source to reverse_search
+  - As a result of this, search_image_source is effectively removed.
 - Rename all mentions of booru to engine.
   - Renamed NotAValidBooruException to NotAValidEngineException
+- Added new helper method to base API to handle ratelimits.
 - Added VS Code Build and test tasks.
-- Included sample `test.sh` for testing purposes.
 - Added new package variable: `__version__` and `version_info` to track versioning.
+- Added sample `test.sh` for testing purposes.
+- Fixed reverse_search to skip saucenao if on long ratelimit in reverse_search
+
 
 ## [1.2.0] - 2019-08-29
 
