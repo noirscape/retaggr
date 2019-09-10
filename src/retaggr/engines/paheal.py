@@ -1,4 +1,4 @@
-from retaggr.boorus.base import Booru
+from retaggr.engines.base import Engine
 from retaggr.errors import NotAvailableSearchException
 
 # External imports
@@ -6,7 +6,7 @@ import hashlib
 from aiohttp_requests import requests
 import xml.etree.ElementTree as ET
 
-class Paheal(Booru):
+class Paheal(Engine):
     """Reverse searches https://rule34.paheal.net for images.
 
     This booru does require images to be downloaded before searching.

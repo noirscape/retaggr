@@ -1,7 +1,7 @@
 import datetime
 import asyncio
 
-class Booru:
+class Engine:
     """Base class for a booru.
     
     All the booru classes must derive from this class.

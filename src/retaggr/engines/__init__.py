@@ -1,4 +1,4 @@
-from .base import Booru
+from .base import Engine
 
 from .danbooru import Danbooru
 from .e621 import E621

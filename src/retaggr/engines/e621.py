@@ -1,4 +1,4 @@
-from retaggr.boorus.base import Booru
+from retaggr.engines.base import Engine
 
 # External modules
 import asyncio
@@ -9,7 +9,7 @@ import time
 from lxml import html
 import datetime
 
-class E621(Booru):
+class E621(Engine):
     """Reverse searches https://e621.net through using the IQDB implementation over at https://iqdb.harry.lu in combination
     with the official e621 API.
     

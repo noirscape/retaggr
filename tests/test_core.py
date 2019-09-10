@@ -20,7 +20,7 @@ def test_core_creation():
 @pytest.mark.asyncio
 async def test_core_search_image_not_a_booru():
     core = retaggr.ReverseSearch(config)
-    with pytest.raises(retaggr.NotAValidBooruException):
+    with pytest.raises(retaggr.NotAValidEngineException):
         await core.search_image("nO", "irrelevant")
 
 @pytest.mark.asyncio

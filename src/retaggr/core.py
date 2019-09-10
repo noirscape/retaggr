@@ -1,14 +1,14 @@
 from retaggr.config import ReverseSearchConfig
 
 # Boorus
-from retaggr.boorus.danbooru import Danbooru
-from retaggr.boorus.e621 import E621
-from retaggr.boorus.iqdb import Iqdb
-from retaggr.boorus.paheal import Paheal
-from retaggr.boorus.saucenao import SauceNao
+from retaggr.engines.danbooru import Danbooru
+from retaggr.engines.e621 import E621
+from retaggr.engines.iqdb import Iqdb
+from retaggr.engines.paheal import Paheal
+from retaggr.engines.saucenao import SauceNao
 
 # Exceptions
-from retaggr.errors import MissingAPIKeysException, NotAValidBooruException
+from retaggr.errors import MissingAPIKeysException, NotAValidEngineException
 
 class ReverseSearch:
     r"""Core class used for Reverse Searching. 
@@ -17,11 +17,11 @@ class ReverseSearch:
 
     All listed methods can only be ran from an asynchronous context.
 
-    :ivar accessible_boorus: The accessible boorus from the passed in configuration object.
+    :ivar accessible_engines: The accessible boorus from the passed in configuration object.
     :param config: The config object.
     :type config: ReverseSearchConfig
     """
-    _all_boorus = [
+    _all_engines = [
         "danbooru",
         "e621",
         "iqdb",
@@ -31,19 +31,19 @@ class ReverseSearch:
 
     def __init__(self, config):
         self.config = config
-        self.accessible_boorus = {}
+        self.accessible_engines = {}
 
         if hasattr(self.config, "min_score"):
             if hasattr(self.config, "danbooru_username") and hasattr(self.config, "danbooru_api_key"):
-                self.accessible_boorus["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key, self.config.min_score)
+                self.accessible_engines["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key, self.config.min_score)
             if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
-                self.accessible_boorus["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
-            self.accessible_boorus["iqdb"] = Iqdb(self.config.min_score)
+                self.accessible_engines["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
+            self.accessible_engines["iqdb"] = Iqdb(self.config.min_score)
 
         if hasattr(self.config, "saucenao_api_key"):
-            self.accessible_boorus["saucenao"] = SauceNao(self.config.saucenao_api_key)
+            self.accessible_engines["saucenao"] = SauceNao(self.config.saucenao_api_key)
 
-        self.accessible_boorus["paheal"] = Paheal()
+        self.accessible_engines["paheal"] = Paheal()
 
     async def reverse_search(self, url, callback=None, download=False):
         r"""
@@ -87,8 +87,8 @@ class ReverseSearch:
         """
         tags = set()
         source = set()
-        for booru in self.accessible_boorus:
-            if self.accessible_boorus[booru].download_required:
+        for booru in self.accessible_engines:
+            if self.accessible_engines[booru].download_required:
                 if not download:
                     continue
             result = await self.search_image(booru, url)
@@ -111,8 +111,8 @@ class ReverseSearch:
         :return: A set of tags
         :rtype: Set[str]
         """
-        if booru not in self._all_boorus:
-            raise NotAValidBooruException("%s is not a valid booru", booru)
-        if booru not in self.accessible_boorus:
+        if booru not in self._all_engines:
+            raise NotAValidEngineException("%s is not a valid engine", booru)
+        if booru not in self.accessible_engines:
             raise MissingAPIKeysException("%s is misisng one or more needed API keys. Check the documentation.")
-        return await self.accessible_boorus[booru].search_image(url)
+        return await self.accessible_engines[booru].search_image(url)

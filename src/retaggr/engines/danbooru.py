@@ -1,11 +1,11 @@
-from retaggr.boorus.base import Booru
+from retaggr.engines.base import Engine
 
 # External modules
 import asyncio
 import requests as fuck_aiohttp
 import functools
 
-class Danbooru(Booru):
+class Danbooru(Engine):
     """Reverse searches https://danbooru.donmai.us for images.
     
     This booru does not required images to be downloaded before searching.

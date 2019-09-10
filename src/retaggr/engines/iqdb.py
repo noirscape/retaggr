@@ -1,4 +1,4 @@
-from retaggr.boorus.base import Booru
+from retaggr.engines.base import Engine
 from retaggr.errors import NotAvailableSearchException
 
 # External imports
@@ -8,7 +8,7 @@ import requests as fuck_aiohttp
 from fake_useragent import UserAgent
 from lxml import html
 
-class Iqdb(Booru):
+class Iqdb(Engine):
     """Reverse searches https://iqdb.org for images.
 
     This booru does not required images to be downloaded before searching.

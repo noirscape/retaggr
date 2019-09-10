@@ -9,5 +9,5 @@ The following pages lay out the API of retaggr.
 
    core
    config
-   boorus
+   engines
    exceptions

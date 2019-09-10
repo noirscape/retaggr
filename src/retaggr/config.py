@@ -4,7 +4,7 @@ class ReverseSearchConfig:
 
     All parameters are prefixed with the specific type needed for reverse searching.
 
-    Check the relevant classes on the booru for details on the boorus.
+    Check the relevant class for the engine for details on the engine.
 
     :param danbooru_username: Username on :class:`Danbooru`
     :type danbooru_username: str

@@ -1,11 +1,11 @@
 import datetime
 import asyncio
 
-from retaggr.boorus.base import Booru
+from retaggr.engines.base import Engine
 from retaggr.errors import NotAvailableSearchException, EngineCooldownException
 import requests as fuck_aiohttp
 
-class SauceNao(Booru):
+class SauceNao(Engine):
     """Reverse searches the SauceNao API and then does additional matching.
 
     This booru does not require images to be downloaded before searching.

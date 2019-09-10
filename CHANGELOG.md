@@ -6,14 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Made callback more comprehensive.
-- Made SauceNao account for ratelimits properly.
-- Made E621 account for ratelimits properly.
-- Added new helper method to base API.
+- Changed callback to be more comprehensive.
+- Changed SauceNao to account for ratelimits properly.
+- Changed E621 to accunt for ratelimits properly.
+- Added new helper method to base API to handle ratelimits.
 - search_image changes:
-  - Removed deprected search_image
+  - Removed deprecated search_image
   - Renamed search_image_source to search_image.
   - As a result of this, search_image_source is effectively removed
+- Rename all mentions of booru to engine.
+  - Renamed NotAValidBooruException to NotAValidEngineException
+- Added VS Code Build and test tasks.
+- Included sample `test.sh` for testing purposes.
 
 ## [1.2.0] - 2019-08-29
 
