@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import subprocess
 
 def get_version():
-    out_val = subprocess.getoutput("git describe --long | sed 's/-/+r/;'")
+    out_val = subprocess.getoutput("git describe --long | sed 's/-/-r/;'")
     if len(subprocess.getoutput("git status -s")) != 0:
         out_val += "-dirty"
     return out_val
