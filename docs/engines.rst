@@ -7,6 +7,11 @@ This file documents some general information about the engines you can search.
 
 You generally shouldn't instantiate these classes yourself, rather you should use them as a reference.
 
+ImageResult
+------------
+
+.. autoclass:: retaggr.engines.ImageResult
+
 Danbooru
 ----------
 

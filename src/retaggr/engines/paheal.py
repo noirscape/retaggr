@@ -1,4 +1,4 @@
-from retaggr.engines.base import Engine
+from retaggr.engines.base import Engine, ImageResult
 from retaggr.errors import NotAvailableSearchException
 
 # External imports
@@ -18,10 +18,7 @@ class Paheal(Engine):
         pass
 
     async def search_image(self, url):
-        results = {
-            "tags": [],
-            "source": None
-        }
+        tags = []
 
         m = hashlib.md5()
         r = await requests.get(url)
@@ -33,9 +30,9 @@ class Paheal(Engine):
 
         for post in xml_tree:
             for tag in post.attrib["tags"].split(): 
-                results["tags"].append(tag.lower())
-            results["source"] = post.attrib["source"]
-        return results
+                tags.append(tag.lower())
+            source = post.attrib["source"]
+        return ImageResult(tags, source, None)
 
     async def search_tag(self, tag):
         """Reverse search the booru for tag data.

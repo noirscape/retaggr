@@ -1,4 +1,5 @@
 from .base import Engine
+from .base import ImageResult
 
 from .danbooru import Danbooru
 from .e621 import E621

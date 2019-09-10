@@ -12,8 +12,15 @@
         {
             "label": "Build a distributable installation",
             "type": "shell",
-            "command": "python3 setup.py sdist bdist_wheel",
-            "group": "build"
+            "command": "source venv/bin/activate && python3 setup.py sdist bdist_wheel",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile docs",
+            "type": "shell",
+            "command": "cd docs && make html",
+            "problemMatcher": []
         }
     ]
 }

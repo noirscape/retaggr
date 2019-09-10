@@ -1,4 +1,4 @@
-from retaggr.engines.base import Engine
+from retaggr.engines.base import Engine, ImageResult
 
 # External modules
 import asyncio
@@ -26,10 +26,9 @@ class Danbooru(Engine):
         self.api_key = api_key
 
     async def search_image(self, url):
-        results = {
-            "tags": [],
-            "source": None
-        }
+        tags = []
+        source = None
+        rating = None
 
         iqdb_url = self.host + "/iqdb_queries.json"
         loop = asyncio.get_event_loop()
@@ -37,10 +36,11 @@ class Danbooru(Engine):
         json = r.json()
         if 'success' in json:
             if not json['success']: # pragma: no cover
-                return []
+                return ImageResult(tags, source, rating)
 
         if len(json) > 0:
             if json[0]['score'] > self.min_score:
-                results["tags"] = json[0]["post"]["tag_string"].split()
-                results["source"] = json[0]["post"]["source"]
-        return results
+                tags = json[0]["post"]["tag_string"].split()
+                source = json[0]["post"]["source"]
+                rating = json[0]["post"]["rating"]
+        return ImageResult(tags, source, rating)

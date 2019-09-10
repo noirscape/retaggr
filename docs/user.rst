@@ -20,7 +20,7 @@ An example of how to do so can be found below.
 
     # Technically the config object doesn't need any parameters to work.
     # That said, the only option available at that point is Paheal.
-    # min_score is required to search IQDB, whilst other boorus 
+    # min_score is required to search IQDB, whilst other engines 
     # will require their own API keys.
     # See the API reference for relevant keys and values.
     config = ReverseSearchConfig(min_score=80.0)
@@ -33,16 +33,16 @@ After that it's possible to search any properly instantiated engine from an asyn
 .. code-block:: python
 
     # Searching IQDB using our previous object.
-    tags = await rsearch.search_image("iqdb", "https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg")
+    result = await rsearch.search_image("iqdb", "https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg")
 
-Acceptable parameters for :meth:`ReverseSearch.search_image` are filenames found in the ``boorus`` subfolder.
+Acceptable parameters for :meth:`ReverseSearch.search_image` are filenames found in the ``engines`` subfolder.
 
 It is also possible to search all instantiated engines through the :meth:`ReverseSearch.reverse_search` method.
 
 .. code-block:: python
 
     # This only searches IQDB and Paheal, since we haven't instantiated anything else.
-    tags = await rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg")
+    result = await rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg")
 
 Do note that this method returns a Set, not a List, unlike the search_image function. This is to remove duplicate findings.
 
@@ -61,9 +61,9 @@ See the example below.
     rsearch = ReverseSearch(ReverseSearchConfig())
 
     # Use asyncio.run() for executing the search methods.
-    tags = asyncio.run(rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg"))
+    result = asyncio.run(rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg"))
 
-    # tags will have the reverse searched tags.
+    # result will have the reverse searched data.
 
 For those using asyncio, this library spawns a couple of threads using ``asyncio.run_in_executor`` at certain points.
 

@@ -1,7 +1,7 @@
 import datetime
 import asyncio
 
-from retaggr.engines.base import Engine
+from retaggr.engines.base import Engine, ImageResult
 from retaggr.errors import NotAvailableSearchException, EngineCooldownException
 import requests as fuck_aiohttp
 
@@ -123,4 +123,4 @@ class SauceNao(Engine):
                 j = r.json()
                 tags += j[0]["tags"].split()
 
-        return {"tags": tags, "source": source}
+        return ImageResult(tags, source, None)

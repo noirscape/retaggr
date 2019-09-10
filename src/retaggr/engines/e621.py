@@ -1,4 +1,4 @@
-from retaggr.engines.base import Engine
+from retaggr.engines.base import Engine, ImageResult
 
 # External modules
 import asyncio
@@ -64,9 +64,10 @@ class E621(Engine):
                     r = await requests.get(self.e621_api, headers=self.user_agent, params={"id": post_id})
                     self.last_request = datetime.datetime.now()
                     json = await r.json()
-                    results["tags"] = json['tags'].split()
-                    results["source"] = json['source']
+                    tags = json['tags'].split()
+                    source = json['source']
+                    rating = json['rating']
             except: # pragma: no cover
                 pass
             row = row + 5
-        return results
+        return ImageResult(tags, source, rating)

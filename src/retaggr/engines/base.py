@@ -1,10 +1,29 @@
 import datetime
 import asyncio
+from collections import namedtuple
+
+ImageResult = namedtuple("ImageResult", ["tags", "source", "rating"])
+"""The response from the engine.
+
+.. py:attribute:: tags
+
+    The tags the engine has located.
+
+.. py:attribute:: source
+
+    The source that has been found for the image.
+
+.. py:attribute:: rating
+
+    The rating on the image.
+
+"""
+
 
 class Engine:
-    """Base class for a booru.
+    """Base class for an engine.
     
-    All the booru classes must derive from this class.
+    All the engine classes must derive from this class.
 
     :ivar host: The base URL for the reverse image domain. This is not an API endpoint, but can be a link to IQDB or something similar.
     :vartype host: str
@@ -25,15 +44,10 @@ class Engine:
         raise NotImplementedError("Expand this method to include the logic needed to reverse search.")
 
     async def search_image(self, url): # pragma: no cover
-        """Reverse search the booru for ``url``.
-
-        This method should return a dict with two keys:
-
-        * source: Contains a string that is the source URL. Can be None if not found or if the Engine doesn't support it.
-        * tags: Contains a list of tags. Can be empty if the Engine doesn't support it.
+        """Reverse search the engine for ``url``.
 
         :param str url: URL to search
-        :return str: dict[str, Set]
+        :rtype: ImageResult
         """
         raise NotImplementedError("Expand this method to include the logic needed to reverse search.")
 

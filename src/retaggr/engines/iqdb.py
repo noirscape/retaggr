@@ -1,4 +1,4 @@
-from retaggr.engines.base import Engine
+from retaggr.engines.base import Engine, ImageResult
 from retaggr.errors import NotAvailableSearchException
 
 # External imports
@@ -27,10 +27,7 @@ class Iqdb(Engine):
         self.ua = UserAgent()
 
     async def search_image(self, url):
-        results = {
-            "tags": [],
-            "source": None
-        }
+        tags = []
 
         params = {"url" : url}
         loop = asyncio.get_event_loop()
@@ -52,12 +49,12 @@ class Iqdb(Engine):
                 temp_tags = tags_str[0].get('alt').split("Tags: ", 1)[1]
                 tags = [x.lower().replace(',', '') for x in temp_tags.split()] # This is because IQDB searches zerochan, a site that doesn't sanitize it's tags (adding capitalization and commas which are illegal in tag names.)
                 if percent > self.min_score:
-                    results["tags"].extend(tags)
+                    tags.extend(tags)
             except: # pragma: no cover
                 pass
             row = row + 6
 
-        return results
+        return ImageResult(tags, None, None)
 
     async def search_tag(self, tag):
         """Reverse search the booru for tag data.

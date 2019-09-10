@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Renamed NotAValidBooruException to NotAValidEngineException
 - Added VS Code Build and test tasks.
 - Included sample `test.sh` for testing purposes.
+- Added new package variable: `__version__` and `version_info` to track versioning.
 
 ## [1.2.0] - 2019-08-29
 

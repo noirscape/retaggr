@@ -1,3 +1,7 @@
+# stdlib
+from collections import namedtuple
+
+# Config
 from retaggr.config import ReverseSearchConfig
 
 # Boorus
@@ -8,7 +12,24 @@ from retaggr.engines.paheal import Paheal
 from retaggr.engines.saucenao import SauceNao
 
 # Exceptions
-from retaggr.errors import MissingAPIKeysException, NotAValidEngineException
+from retaggr.errors import MissingAPIKeysException, NotAValidEngineException, EngineCooldownException
+
+ReverseResult = namedtuple("ReverseResult", ["tags", "source", "rating"])
+"""The response from a reverse image search. All attributes are Sets.
+
+.. py:attribute:: tags
+
+    The tags the engine has located.
+
+.. py:attribute:: source
+
+    The source that has been found for the image.
+
+.. py:attribute:: rating
+
+    The rating on the image.
+
+"""
 
 class ReverseSearch:
     r"""Core class used for Reverse Searching. 
@@ -46,16 +67,6 @@ class ReverseSearch:
         self.accessible_engines["paheal"] = Paheal()
 
     async def reverse_search(self, url, callback=None, download=False):
-        r"""
-        .. deprecated:: 1.2
-            Use :meth:`ReverseSearch.search_image_source` instead
-        """
-        tags = set()
-        result = await self.search_image_source(url, callback)
-        tags.update(result["tags"])
-        return tags
-
-    async def search_image_source(self, url, callback=None, download=False, skip_saucenao=False):
         """
         Reverse searches all accessible boorus for ``url``.
 
@@ -66,15 +77,16 @@ class ReverseSearch:
             .. code-block:: python
                :linenos:
 
-                async def callback(booru, tags, source):
+                async def callback(engine, rresult):
                     print("This booru was searched: %s", booru)
-                    print("These tags were found: %s", tags)
-                    print("This source was found: %s", source)
+                    print("These tags were found: %s", rresult.tags)
+                    print("This source was found: %s", rresult.source)
+                    print("This rating was found: %s", rresult.rating)
 
                 # Callback will be called each time a search finishes.
                 rs.reverse_search(url, callback)
 
-        After a reverse search, this method will be called with the booru name that was just searched.
+        After a reverse search, this method will be called with the engine name that was just searched.
 
         :param url: The URL to search.
         :type url: str
@@ -82,22 +94,29 @@ class ReverseSearch:
         :type callback: Optional[function]
         :param download: Run searches on boorus that require a file download. Defaults to False.
         :type download: Optional[bool]
-        :return: A dictionary with two keys. ``source`` contains a Set of Strings linking to the image source. ``tags`` contains a Set of tags.
-        :rtype: dict[Set[str], Set[str]]
+        :return: A :class:`ReverseResult` instance containing your data.
+        :rtype: ReverseResult
         """
         tags = set()
         source = set()
-        for booru in self.accessible_engines:
-            if self.accessible_engines[booru].download_required:
+        rating = set()
+        for engine in self.accessible_engines:
+            if self.accessible_engines[engine].download_required:
                 if not download:
                     continue
-            result = await self.search_image(booru, url)
-            tags.update(result["tags"])
-            if result["source"]:
-                source.update(result["source"])
-            if callback:
-                await callback(booru, set(result["tags"]), result["source"])
-        return {"tags": tags, "source": source}
+            try:
+                result = await self.search_image(engine, url)
+            except EngineCooldownException: # pragma: no cover
+                pass
+            else:
+                tags.update(result.tags)
+                if result.source:
+                    source.update(result.source)
+                if result.rating:
+                    rating.update(result.rating)
+                if callback:
+                    await callback(engine, ReverseResult(result.tags, result.source, result.rating))
+        return ReverseResult(tags, source, rating)
 
     async def search_image(self, booru, url):
         r"""Reverse search a booru for ``url``.
@@ -107,9 +126,9 @@ class ReverseSearch:
         :param url: The URL to search.
         :type url: str
         :raises MissingAPIKeysException: Required keys in config object missing.
-        :raises NotAValidBooruException: The passed in booru is not a valid booru.
-        :return: A set of tags
-        :rtype: Set[str]
+        :raises NotAValidEngineException: The passed in booru is not a valid booru.
+        :return: A :class:`ImageResult` instance containing your data.
+        :rtype: ImageResult
         """
         if booru not in self._all_engines:
             raise NotAValidEngineException("%s is not a valid engine", booru)
