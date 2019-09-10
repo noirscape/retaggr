@@ -6,7 +6,7 @@ Exceptions
 .. autoclass:: MissingAPIKeysException
     :members:
 
-.. autoclass:: NotAValidBooruException
+.. autoclass:: NotAValidEngineException
     :members:
 
 .. autoclass:: NotAvailableSearchException
