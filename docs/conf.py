@@ -56,4 +56,4 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 # Intersphinx stuff
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {'py': ('https://docs.python.org/3', None)}

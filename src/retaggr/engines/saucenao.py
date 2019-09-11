@@ -45,10 +45,10 @@ class SauceNao(Engine):
     * 34: DeviantART (not preferred, large number of art theft and reuploads)
     """
 
-    long_remaining = 1
+    long_remaining = 2
     """The total amount of requests remaining for the next 24 hours. If this is 0, the library will raise an :class:`retaggr.errors.EngineCooldownException` until the rate limit expires."""
 
-    short_remaining = 1
+    short_remaining = 2
     """The total amount of requests remaining for the next 30 seconds. If this is 0, the library will sleep until it expires."""
 
     last_request = None

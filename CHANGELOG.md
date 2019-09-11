@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.1.0] - 2019-09-11
+## [2.1.1] - 2019-09-11
+
+- Fixed crucial endless loop bug due to incorrect ratelimit checking.
+- Fixed formatting error in documentation.
+
+## [2.1.0] - 2019-09-11 [YANKED]
 
 - Changed search methods to be more async (request calls weren't run_in_executor).
 - Changed SauceNao ratelimit accounting to function better.
