@@ -1,5 +1,6 @@
 import datetime
 import asyncio
+import functools
 
 from retaggr.engines.base import Engine, ImageResult
 from retaggr.errors import NotAvailableSearchException, EngineCooldownException
@@ -44,10 +45,11 @@ class SauceNao(Engine):
     * 34: DeviantART (not preferred, large number of art theft and reuploads)
     """
 
-    is_cooling_short = False
-    """Used if the engine is being ratelimited for the next 30 seconds. If this ratelimit is hit, the engine will sleep for 30 seconds before the next request."""
-    is_cooling_long = False
-    """Used if the engine is being ratelimited for the next 24 hours. If this ratelimit is hit, the engine will raise an :class:`retaggr.errors.EngineCooldownException`."""
+    long_remaining = 1
+    """The total amount of requests remaining for the next 24 hours. If this is 0, the library will raise an :class:`retaggr.errors.EngineCooldownException` until the rate limit expires."""
+
+    short_remaining = 1
+    """The total amount of requests remaining for the next 30 seconds. If this is 0, the library will sleep until it expires."""
 
     last_request = None
     """The last request date the engine made to saucenao. Used to regulate the ratelimits."""
@@ -64,15 +66,27 @@ class SauceNao(Engine):
             "output_type": "2", # 2 is the JSON API,
             "url": url
         }
-        if self.is_cooling_short: # pragma: no cover
+        if self.last_request: # pragma: no cover
+            long_ratelimit_ends = self.last_request + datetime.timedelta(hours=24)
+            if self.long_remaining <= 1 and long_ratelimit_ends < datetime.datetime.now():
+                raise EngineCooldownException(until=long_ratelimit_ends)
+
+        if self.short_remaining <= 1: # pragma: no cover
             await self.sleep_until_ratelimit(35) # 35 seconds = no issue
-            self.is_cooling_short = False
-        if not self.is_cooling_long: # pragma: no cover
-            r = fuck_aiohttp.get(request_url, params=params)
-            self.last_request = datetime.datetime.now()
-            return await self.index_parser(r.json())
-        else: # pragma: no cover
-            raise EngineCooldownException(until=self.last_request + datetime.timedelta(hours=24))
+
+        loop = asyncio.get_event_loop()
+        r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, request_url, params=params))
+        j = r.json()
+        self.last_request = datetime.datetime.now()
+        if r.status_code == 200:
+            self.short_remaining = j["header"]["short_remaining"] - 1
+            self.long_remaining = j["header"]["long_remaining"] - 1
+            return await self.index_parser(j)
+        elif r.status_code == 429: # 429 indicates we hit a rate limit, but not one we could've accounted for before.
+            self.short_remaining = 0
+            # We do raise an EngineCooldownException, since this indicates that it occured before API instantiating a request
+            # (rest of library handles it with a previously done request already)
+            raise EngineCooldownException(until=datetime.datetime.now() + datetime.timedelta(seconds=35)) 
 
     async def search_tag(self, tag):
         raise NotAvailableSearchException("This engine cannot search tags.")
@@ -108,18 +122,19 @@ class SauceNao(Engine):
             tag_results[entry["header"]["index_id"]] = entry
 
         # Kinda looks stupid, but whatever.
+        loop = asyncio.get_event_loop()
         tags = []
         for index_id, entry in tag_results.items():
             if index_id == 9: # Danbooru
-                r = fuck_aiohttp.get("https://danbooru.donmai.us/posts/" + str(entry["data"]["danbooru_id"]) + ".json")
+                r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, "https://danbooru.donmai.us/posts/" + str(entry["data"]["danbooru_id"]) + ".json"))
                 j = r.json()
                 tags += j["tag_string"].split()
             if index_id == 12: # Yande.re # pragma: no cover
-                r = fuck_aiohttp.get("https://yande.re/post.json", params={"tags": "id:" + str(entry["data"]["yandere_id"])})
+                r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, "https://yande.re/post.json", params={"tags": "id:" + str(entry["data"]["yandere_id"])}))
                 j = r.json()
                 tags += j[0]["tags"].split()
             if index_id == 26: # Konachan # pragma: no cover
-                r = fuck_aiohttp.get("http://konachan.com/post.json", params={"tags": "id:" + str(entry["data"]["konachan_id"])})
+                r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, "http://konachan.com/post.json", params={"tags": "id:" + str(entry["data"]["konachan_id"])}))
                 j = r.json()
                 tags += j[0]["tags"].split()
 

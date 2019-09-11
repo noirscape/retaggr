@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2019-09-11
+
+- Changed search methods to be more async (request calls weren't run_in_executor).
+- Changed SauceNao ratelimit accounting to function better.
+
+## [2.0.0] - 2019-09-10
+
 - Changed callback to be more comprehensive.
 - Changed SauceNao to account for ratelimits properly.
 - Changed E621 to accunt for ratelimits properly.
@@ -61,7 +68,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added core class
 - Added config class
 
-[Unreleased]: https://github.com/booru-utils/retaggr/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/booru-utils/retaggr/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/booru-utils/retaggr/compare/2.1.0...2.0.0
+[2.0.0]: https://github.com/booru-utils/retaggr/compare/1.2.0...2.0.0
 [1.2.0]: https://github.com/booru-utils/retaggr/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/booru-utils/retaggr/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/booru-utils/retaggr/compare/1.0.0...1.1.0
