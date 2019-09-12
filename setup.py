@@ -3,7 +3,7 @@ import subprocess
 
 setup(
     name="retaggr",
-    version="2.1.3",
+    version="2.1.4",
     url="https://github.com/booru-utils/reverse-search",
     license="LGPLv3",
     description="Reverse image searching utility for images.",

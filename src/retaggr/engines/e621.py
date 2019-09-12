@@ -60,7 +60,8 @@ class E621(Engine):
                 if percent > self.min_score:
                     post_id = tables[row - 3].xpath("//td/a")[0].get("href").split("/")[-1]
                     # Check tags from api
-                    await self.sleep_until_ratelimit(1)
+                    if self.last_request:
+                        await self.sleep_until_ratelimit(1)
                     r = await requests.get(self.e621_api, headers=self.user_agent, params={"id": post_id})
                     self.last_request = datetime.datetime.now()
                     json = await r.json()

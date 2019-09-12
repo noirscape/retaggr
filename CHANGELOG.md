@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.4] - 2019-09-12
+
+- Fixed e621 premature ratelimit call
+
 ## [2.1.3] - 2019-09-12
 
 - Fixed ratelimit underflow bug on low values.
