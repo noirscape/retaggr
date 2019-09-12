@@ -109,11 +109,12 @@ class ReverseSearch:
             except EngineCooldownException: # pragma: no cover
                 pass
             else:
-                tags.update(result.tags)
+                if result.tags:
+                    tags.update(result.tags)
                 if result.source:
-                    source.update(result.source)
+                    source.add(result.source)
                 if result.rating:
-                    rating.update(result.rating)
+                    rating.add(result.rating)
                 if callback:
                     await callback(engine, result)
         return ReverseResult(tags, source, rating)
