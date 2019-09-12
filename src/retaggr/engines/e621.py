@@ -3,7 +3,7 @@ from retaggr.engines.base import Engine, ImageResult
 # External modules
 import asyncio
 import requests as fuck_aiohttp
-from aiohttp_requests import requests
+from retaggr.aiohttp_requests import requests
 import functools
 import time
 from lxml import html
@@ -39,10 +39,9 @@ class E621(Engine):
         self.last_request = datetime.datetime.now()
 
     async def search_image(self, url):
-        results = {
-            "tags": [],
-            "source": None
-        }
+        tags = []
+        source = None
+        rating = None
 
         params = {"url" : url}
 
@@ -60,8 +59,7 @@ class E621(Engine):
                 if percent > self.min_score:
                     post_id = tables[row - 3].xpath("//td/a")[0].get("href").split("/")[-1]
                     # Check tags from api
-                    if self.last_request:
-                        await self.sleep_until_ratelimit(1)
+                    await self.sleep_until_ratelimit(1)
                     r = await requests.get(self.e621_api, headers=self.user_agent, params={"id": post_id})
                     self.last_request = datetime.datetime.now()
                     json = await r.json()
