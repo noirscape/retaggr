@@ -19,6 +19,7 @@ class Paheal(Engine):
 
     async def search_image(self, url):
         tags = []
+        source = None
 
         m = hashlib.md5()
         r = await requests.get(url)
