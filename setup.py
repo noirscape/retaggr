@@ -25,7 +25,6 @@ setup(
     packages=find_packages('src'),
     package_dir={'':'src',},
     install_requires=[
-        "aiohttp-requests",
         "lxml",
         "fake-useragent",
         "requests",

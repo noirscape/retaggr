@@ -2,6 +2,6 @@ language: python
 before_script:
   - pip install -r test-requirements.txt -r requirements.txt
 script:
-  - py.test --cov=src -W ignore::DeprecationWarning
+  - py.test --cov=src -W ignore::DeprecationWarning --omit src/retaggr/aiohttp_requests/__init__.py
 after_success:
   - coveralls
