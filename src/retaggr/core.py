@@ -4,7 +4,7 @@ from collections import namedtuple
 # Config
 from retaggr.config import ReverseSearchConfig
 
-# Boorus
+# Engines
 from retaggr.engines.danbooru import Danbooru
 from retaggr.engines.e621 import E621
 from retaggr.engines.iqdb import Iqdb
@@ -115,7 +115,7 @@ class ReverseSearch:
                 if result.rating:
                     rating.update(result.rating)
                 if callback:
-                    await callback(engine, ReverseResult(result.tags, result.source, result.rating))
+                    await callback(engine, result)
         return ReverseResult(tags, source, rating)
 
     async def search_image(self, booru, url):
