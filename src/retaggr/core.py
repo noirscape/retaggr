@@ -1,5 +1,6 @@
 # stdlib
 from collections import namedtuple
+import logging
 
 # Config
 from retaggr.config import ReverseSearchConfig
@@ -31,6 +32,9 @@ ReverseResult = namedtuple("ReverseResult", ["tags", "source", "rating"])
 
 """
 
+# Set up logger
+logger = logging.getLogger(__name__)
+
 class ReverseSearch:
     r"""Core class used for Reverse Searching. 
     
@@ -57,12 +61,16 @@ class ReverseSearch:
         if hasattr(self.config, "min_score"):
             if hasattr(self.config, "danbooru_username") and hasattr(self.config, "danbooru_api_key"):
                 self.accessible_engines["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key, self.config.min_score)
+                logger.info("Created Danbooru engine")
             if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
                 self.accessible_engines["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
+                logger.info("Created e621 engine")
             self.accessible_engines["iqdb"] = Iqdb(self.config.min_score)
+            logger.info("Created IQDB engine")
 
         if hasattr(self.config, "saucenao_api_key"):
             self.accessible_engines["saucenao"] = SauceNao(self.config.saucenao_api_key)
+            logger.info("Created SauceNao engine")
 
         self.accessible_engines["paheal"] = Paheal()
 
@@ -101,8 +109,10 @@ class ReverseSearch:
         source = set()
         rating = set()
         for engine in self.accessible_engines:
+            logging.info("[%s] Starting search in [%s] engine", url, engine)
             if self.accessible_engines[engine].download_required:
                 if not download:
+                    logging.info("[%s] Downloading files has been disabled. Skipping [%s]", url, engine)
                     continue
             try:
                 result = await self.search_image(engine, url)
@@ -110,13 +120,18 @@ class ReverseSearch:
                 pass
             else:
                 if result.tags:
+                    logging.info("[%s] Found tags: %s", url, result.tags)
                     tags.update(result.tags)
                 if result.source:
+                    logging.info("[%s] Found source: %s", url, result.source)
                     source.add(result.source)
                 if result.rating:
+                    logging.info("[%s] Found rating: %s", url, result.rating)
                     rating.add(result.rating)
                 if callback:
+                    logging.info("[%s] Executing callback", url)
                     await callback(engine, result)
+            logging.info("[%s] Finished searching [%s]", url, engine)
         return ReverseResult(tags, source, rating)
 
     async def search_image(self, booru, url):

@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2019-09-12
+
+- Added logging to core.
+- Removed dependency on aiohttp_requests library
+  - Well, sorta. It localizes the library to an internal folder instead.
+  - This is to prevent aiohttp from being version pinned.
+- Fixed UnboundLocalError in E621.
+- Fixed Core bug where a source would be split up into individual characters (and then added to a set).
+
 ## [2.1.4] - 2019-09-12
 
 - Fixed e621 premature ratelimit call

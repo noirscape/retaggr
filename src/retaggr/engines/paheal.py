@@ -3,7 +3,7 @@ from retaggr.errors import NotAvailableSearchException
 
 # External imports
 import hashlib
-from aiohttp_requests import requests
+from retaggr.aiohttp_requests import requests
 import xml.etree.ElementTree as ET
 
 class Paheal(Engine):

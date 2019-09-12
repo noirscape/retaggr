@@ -13,3 +13,9 @@ config = ReverseSearchConfig(min_score=80.0)
 rsearch = ReverseSearch(config)
 result = asyncio.run(rsearch.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg"))
 ```
+
+## Licensing
+
+This project is under the GNU LGPLv3 license.
+
+In addition, this project contains a local copy of the aiohttp_requests package (this is to resolve a minor dependency pinning problem aiohttp_requests on pip has). This library is under the MIT. Check the header of the init file for the license.
