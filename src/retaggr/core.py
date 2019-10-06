@@ -1,4 +1,5 @@
 # stdlib
+import asyncio
 from collections import namedtuple
 import logging
 
@@ -6,6 +7,7 @@ import logging
 from retaggr.config import ReverseSearchConfig
 
 # Engines
+from retaggr.engines.base import ImageResult
 from retaggr.engines.danbooru import Danbooru
 from retaggr.engines.e621 import E621
 from retaggr.engines.iqdb import Iqdb
@@ -108,31 +110,44 @@ class ReverseSearch:
         tags = set()
         source = set()
         rating = set()
+        tasks = []
+        logger.info("Creating reverse search engine tasks.")
         for engine in self.accessible_engines:
-            logging.info("[%s] Starting search in [%s] engine", url, engine)
             if self.accessible_engines[engine].download_required:
                 if not download:
-                    logging.info("[%s] Downloading files has been disabled. Skipping [%s]", url, engine)
+                    logger.info("[%s] Downloading files has been disabled. Skipping [%s]", url, engine)
                     continue
-            try:
-                result = await self.search_image(engine, url)
-            except EngineCooldownException: # pragma: no cover
-                pass
-            else:
-                if result.tags:
-                    logging.info("[%s] Found tags: %s", url, result.tags)
-                    tags.update(result.tags)
-                if result.source:
-                    logging.info("[%s] Found source: %s", url, result.source)
-                    source.add(result.source)
-                if result.rating:
-                    logging.info("[%s] Found rating: %s", url, result.rating)
-                    rating.add(result.rating)
-                if callback:
-                    logging.info("[%s] Executing callback", url)
-                    await callback(engine, result)
-            logging.info("[%s] Finished searching [%s]", url, engine)
+            tasks.append(self._gather_reverse_task(engine, url, callback))
+        results = await asyncio.gather(*tasks)
+        for result in results:
+            if isinstance(result, Exception): # Engine failed
+                logger.warning("[%s] An engine has failed!")
+                continue
+            if result.tags:
+                tags.update(result.tags)
+            if result.source:
+                source.add(result.source)
+            if result.rating:
+                rating.add(result.rating)
         return ReverseResult(tags, source, rating)
+
+    async def _gather_reverse_task(self, engine, url, callback) -> ImageResult:
+        """Underlying method used to run reverse_search more asynchronously."""
+        logger.info("[%s] Starting search in [%s] engine", url, engine)
+        try:
+            result = await self.search_image(engine, url)
+        except: # pragma: no cover
+            # reverse_search just can't except, it's meant to keep trucking no matter what.
+            return ImageResult([], None, None)
+        else:
+            logger.info("[%s][%s] Found tags: %s", url, engine, result.tags)
+            logger.info("[%s][%s] Found source: %s", url, engine, result.source)
+            logger.info("[%s][%s] Found rating: %s", url, engine, result.rating)
+            if callback:
+                logger.info("[%s][%s] Executing callback", url, engine)
+                await callback(engine, result)
+        logger.info("[%s] Finished searching [%s]", url, engine)
+        return result
 
     async def search_image(self, booru, url):
         r"""Reverse search a booru for ``url``.

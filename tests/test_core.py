@@ -2,6 +2,10 @@ import pytest
 import retaggr
 import os
 
+# Logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 # Grab the relevant keys from the environment
 danbooru_username = os.environ.get('DANBOORU_USERNAME', None)
 danbooru_api_key = os.environ.get('DANBOORU_API_KEY', None)
@@ -38,8 +42,8 @@ async def test_image_core():
 @pytest.mark.asyncio
 async def test_reverse_search():
     core = retaggr.ReverseSearch(config)
-    result = await core.reverse_search("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png")
-    assert 'hornet_(hollow_knight)' in result.tags
+    result = await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
+    assert 'dancer_of_the_boreal_valley' in result.tags
 
 @pytest.mark.asyncio
 async def test_reverse_search_callback():
@@ -48,5 +52,5 @@ async def test_reverse_search_callback():
     async def callback(engine, rresult):
         nonlocal calls
         calls += 1
-    await core.reverse_search("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png", callback=callback)
+    await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg", callback=callback)
     assert calls > 0

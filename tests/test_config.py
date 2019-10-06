@@ -1,6 +1,10 @@
 import pytest
 import retaggr
 
+# Logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 def test_create_empty_config():
     config = retaggr.ReverseSearchConfig()
     assert config.__dict__ == {}

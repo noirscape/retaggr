@@ -1,0 +1,2 @@
+[run]
+omit = src/retaggr/aiohttp_requests/__init__.py

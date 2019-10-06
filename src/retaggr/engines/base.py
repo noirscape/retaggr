@@ -50,21 +50,3 @@ class Engine:
         :rtype: ImageResult
         """
         raise NotImplementedError("Expand this method to include the logic needed to reverse search.")
-
-    async def sleep_until_ratelimit(self, sleep_time): # pragma: no cover
-        """This is an additional helper function for APIs with known rate limits.
-
-        If an engine can hit the ratelimit and it's timeout is acceptable (an acceptable timeframe is no more than one minute),
-        this helper function will allow the engine to sleep until it has passed.
-
-        If the timeframe is not acceptable, raise :class:`EngineCooldownException` instead.
-
-        To use this, you will need to add the instance variable last_request See the main class doc for details.
-        """
-        timeout = datetime.timedelta(seconds=sleep_time) # 35 seconds -> ensures no issue
-        until = self.last_request + timeout
-        now = datetime.datetime.now()
-        if now > until:
-            return # Fine, limit has passed
-        else:
-            await asyncio.sleep((now - until).seconds)

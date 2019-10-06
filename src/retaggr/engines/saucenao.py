@@ -44,19 +44,8 @@ class SauceNao(Engine):
     * 37: MangaDex (not official redistribution, but metadata is accurate)
     * 34: DeviantART (not preferred, large number of art theft and reuploads)
     """
-
-    long_remaining = 2
-    """The total amount of requests remaining for the next 24 hours. If this is 0, the library will raise an :class:`retaggr.errors.EngineCooldownException` until the rate limit expires."""
-
-    short_remaining = 2
-    """The total amount of requests remaining for the next 30 seconds. If this is 0, the library will sleep until it expires."""
-
-    last_request = None
-    """The last request date the engine made to saucenao. Used to regulate the ratelimits."""
-
     def __init__(self, api_key):
         self.api_key = api_key
-        self.last_request = datetime.datetime.now()
 
     async def search_image(self, url):
         request_url = "https://saucenao.com/search.php"
@@ -66,27 +55,13 @@ class SauceNao(Engine):
             "output_type": "2", # 2 is the JSON API,
             "url": url
         }
-        if self.last_request: # pragma: no cover
-            long_ratelimit_ends = self.last_request + datetime.timedelta(hours=24)
-            if self.long_remaining <= 1 and long_ratelimit_ends < datetime.datetime.now():
-                raise EngineCooldownException(until=long_ratelimit_ends)
-
-        if self.short_remaining <= 1: # pragma: no cover
-            await self.sleep_until_ratelimit(35) # 35 seconds = no issue
-
         loop = asyncio.get_event_loop()
         r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, request_url, params=params))
         j = r.json()
-        self.last_request = datetime.datetime.now()
         if r.status_code == 200:
-            self.short_remaining = j["header"]["short_remaining"] - 1
-            self.long_remaining = j["header"]["long_remaining"] - 1
             return await self.index_parser(j)
-        elif r.status_code == 429: # 429 indicates we hit a rate limit, but not one we could've accounted for before.
-            self.short_remaining = 0
-            # We do raise an EngineCooldownException, since this indicates that it occured before API instantiating a request
-            # (rest of library handles it with a previously done request already)
-            raise EngineCooldownException(until=datetime.datetime.now() + datetime.timedelta(seconds=35)) 
+        elif r.status_code == 429: 
+            raise EngineCooldownException()
 
     async def search_tag(self, tag):
         raise NotAvailableSearchException("This engine cannot search tags.")

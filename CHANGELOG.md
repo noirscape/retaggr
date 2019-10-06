@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2019-10-06
+
+- Changed logging so it goes to the correct logger.
+- Removed ratelimiting for SauceNao. It just raises an exception instead, no matter what.
+  - Sleeping causes underflows. Unless there's a way to properly handle this, there's no way around it.
+- Changed asyncio tasking
+  - Somewhere around a 30% speed gain comparatively to how it was before.
+- Fixed IQDB tag names.
+
 ## [2.2.0] - 2019-09-12
 
 - Added logging to core.
@@ -96,7 +105,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added core class
 - Added config class
 
-[Unreleased]: https://github.com/booru-utils/retaggr/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/booru-utils/retaggr/compare/2.3.0...HEAD
+[2.3.0]: https://github.com/booru-utils/retaggr/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/booru-utils/retaggr/compare/2.1.4...2.2.0
 [2.1.4]: https://github.com/booru-utils/retaggr/compare/2.1.3...2.1.4
 [2.1.3]: https://github.com/booru-utils/retaggr/compare/2.1.2...2.1.3

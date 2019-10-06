@@ -47,7 +47,13 @@ class Iqdb(Engine):
                 # Create tags list
                 tags_str = tables[row-2].xpath("//a/img")
                 temp_tags = tags_str[0].get('alt').split("Tags: ", 1)[1]
-                tags = [x.lower().replace(',', '') for x in temp_tags.split()] # This is because IQDB searches zerochan, a site that doesn't sanitize it's tags (adding capitalization and commas which are illegal in tag names.)
+                # IQDBs tag responses leave... something to be desired. To be clear,
+                # Given the tag string "a,b, c, D"
+                # These two lines should sanitize the tags to
+                # ["a", "b", "c", "d"]
+                tags = [x.lower().replace(",", " ").split() for x in temp_tags.split()]
+                tags = [x for y in tags for x in y]
+
                 if percent > self.min_score:
                     tags.extend(tags)
             except: # pragma: no cover

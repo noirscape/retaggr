@@ -2,6 +2,11 @@ import retaggr
 import retaggr.engines as engines
 import os
 import pytest
+import time
+
+# Logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Grab the relevant keys from the environment
 danbooru_username = os.environ.get('DANBOORU_USERNAME', None)
@@ -21,6 +26,7 @@ async def test_danbooru():
 
 @pytest.mark.asyncio
 async def test_e621():
+    time.sleep(1) # We have to do this, otherwise e621 API blocks us. It's only an issue for testing this here.
     engine = engines.e621.E621(e621_username, app_name, version, 80.0)
     result = await engine.search_image("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png")
     assert 'hornet_(hollow_knight)' in result.tags
