@@ -28,5 +28,6 @@ setup(
         "lxml",
         "fake-useragent",
         "requests",
+        "aiohttp"
     ]
 )
