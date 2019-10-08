@@ -1,5 +1,5 @@
-## booru-reverse-search
-[![Coverage Status](https://coveralls.io/repos/github/booru-utils/retaggr/badge.svg?branch=master)](https://coveralls.io/github/booru-utils/retaggr?branch=master) [![GitHub license](https://img.shields.io/github/license/booru-utils/retaggr)](https://github.com/booru-utils/retaggr/blob/master/LICENSE) [![Build Status](https://travis-ci.org/booru-utils/retaggr.svg?branch=master)](https://travis-ci.org/booru-utils/retaggr)
+## retaggr
+[![Coverage Status](https://coveralls.io/repos/github/noirscape/retaggr/badge.svg?branch=master)](https://coveralls.io/github/noirscape/retaggr?branch=master) [![GitHub license](https://img.shields.io/github/license/noirscape/retaggr)](https://github.com/noirscape/retaggr/blob/master/LICENSE) [![Build Status](https://travis-ci.org/noirscape/retaggr.svg?branch=master)](https://travis-ci.org/noirscape/retaggr)
 
 Library to reverse search various boorus.
 

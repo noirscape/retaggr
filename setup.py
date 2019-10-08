@@ -3,8 +3,8 @@ import subprocess
 
 setup(
     name="retaggr",
-    version="2.3.0",
-    url="https://github.com/booru-utils/reverse-search",
+    version="2.3.1",
+    url="https://github.com/noirscape/reverse-search",
     license="LGPLv3",
     description="Reverse image searching utility for images.",
     long_description=open("README.md").read(),
@@ -13,13 +13,13 @@ setup(
     author_email="neko@catgirlsin.space",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: Lesser GNU General Public License v3 (LGPLv3)",
         "Programming Language :: Python :: 3",
     ],
     keywords="reverse image search booru",
     project_urls={
-        "Source": "https://github.com/booru-utils/retaggr",
-        "Tracker": "https://github.com/booru-utils/retaggr/issues",
+        "Source": "https://github.com/noirscape/retaggr",
+        "Tracker": "https://github.com/noirscape/retaggr/issues",
         "Documentation": "https://retaggr.rtfd.org"
     },
     packages=find_packages('src'),
