@@ -13,7 +13,7 @@ setup(
     author_email="neko@catgirlsin.space",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "License :: OSI Approved :: Lesser GNU General Public License v3 (LGPLv3)",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
         "Programming Language :: Python :: 3",
     ],
     keywords="reverse image search booru",
