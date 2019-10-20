@@ -14,3 +14,6 @@ Exceptions
 
 .. autoclass:: EngineCooldownException
     :members:
+
+.. autoclass:: EngineIsDown
+    :members:

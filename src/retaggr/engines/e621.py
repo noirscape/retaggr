@@ -1,4 +1,5 @@
 from retaggr.engines.base import Engine, ImageResult
+from retaggr.errors import EngineIsDown
 
 # External modules
 import asyncio
@@ -48,9 +49,15 @@ class E621(Engine):
         loop = asyncio.get_event_loop()
         r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.post, self.host, params=params))
 
+        if not r:
+            raise EngineIsDown("harry.lu returned an error code!")
+
+        if "oh noes, can not connect to database" in r.text: # There's a database error
+            raise EngineIsDown("Background API down for harry.lu")
+
         doc = html.fromstring(r.text)
         tables = doc.xpath("//div[@id='pages']/div/table/tr/td")
-    
+
         row = 5
         while row < len(tables):
             try:

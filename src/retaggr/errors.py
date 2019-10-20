@@ -10,3 +10,6 @@ class NotAvailableSearchException(Exception):
 
 class EngineCooldownException(Exception):
     """This engine is on cooldown."""
+
+class EngineIsDown(Exception):
+    """The engine is currently not available (eg. Database issues)."""

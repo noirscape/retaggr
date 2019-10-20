@@ -23,11 +23,13 @@ clean: build-clean pyc-clean ## Run all clean steps
 clean-build: clean build ## Remove the build directory and build the package
 
 test: ## Run the tests
+	@printf "$(bold)Running tests$(sgr0)\n"
 	py.test --cov=src --cov-config=.coveragerc -W ignore::DeprecationWarning
 
 clean-test: clean test ## Cleanup execution files, then run the tests
 
 dist: clean build ## Remove build directories, build the package, and run twine
+	@printf "$(bold)Uploading distribution$(sgr0)\n"
 	twine upload dist/*
 
 help:

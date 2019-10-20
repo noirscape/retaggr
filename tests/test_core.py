@@ -21,6 +21,11 @@ def test_core_creation():
     core = retaggr.ReverseSearch(config)
     assert core.config == config
 
+def test_core_creation_with_no_iqdb():
+    special_config = retaggr.ReverseSearchConfig(skip_iqdb=True, min_score=80.0) # Minimal IQDB config
+    core = retaggr.ReverseSearch(special_config)
+    assert core.config == special_config
+
 @pytest.mark.asyncio
 async def test_core_search_image_not_a_booru():
     core = retaggr.ReverseSearch(config)

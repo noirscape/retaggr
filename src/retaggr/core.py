@@ -67,8 +67,15 @@ class ReverseSearch:
             if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
                 self.accessible_engines["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
                 logger.info("Created e621 engine")
-            self.accessible_engines["iqdb"] = Iqdb(self.config.min_score)
-            logger.info("Created IQDB engine")
+
+            # IQDB stuff -> we do the check _first_ since someone might not specify this at all, in which case we do still instantiate it.
+            if hasattr(self.config, "skip_iqdb") and not self.config.skip_iqdb:
+                skip_iqdb = True
+            else:
+                skip_iqdb = False
+            if not skip_iqdb:
+                self.accessible_engines["iqdb"] = Iqdb(self.config.min_score)
+                logger.info("Created IQDB engine")
 
         if hasattr(self.config, "saucenao_api_key"):
             self.accessible_engines["saucenao"] = SauceNao(self.config.saucenao_api_key)

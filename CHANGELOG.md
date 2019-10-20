@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.3.1] - 2019-10-06
+## [2.3.1] - 2019-10-20
 
 - Recover from organization takedown/repo removal.
+- Added makefile for testing/building simplification
+- Added aiohttp to repository dependencies, it went missing after removing aiohttp_requests
+- Added attribute to config to skip IQDB creation.
+- Added dedicated exception type to handle engines that are unavailable due to external reasons.
 
 ## [2.3.0] - 2019-10-06
 
