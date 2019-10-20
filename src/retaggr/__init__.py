@@ -1,6 +1,6 @@
 from .core import ReverseSearch, ReverseResult
 from .config import ReverseSearchConfig
-from .errors import MissingAPIKeysException, NotAValidEngineException, NotAvailableSearchException, EngineCooldownException
+from .errors import MissingAPIKeysException, NotAValidEngineException, NotAvailableSearchException, EngineCooldownException, EngineIsDown
 from .engines import ImageResult
 
 from collections import namedtuple
