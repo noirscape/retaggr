@@ -1,5 +1,6 @@
 ## retaggr
 [![Coverage Status](https://coveralls.io/repos/github/noirscape/retaggr/badge.svg?branch=master)](https://coveralls.io/github/noirscape/retaggr?branch=master) [![GitHub license](https://img.shields.io/github/license/noirscape/retaggr)](https://github.com/noirscape/retaggr/blob/master/LICENSE) [![Build Status](https://travis-ci.org/noirscape/retaggr.svg?branch=master)](https://travis-ci.org/noirscape/retaggr)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnoirscape%2Fretaggr.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnoirscape%2Fretaggr?ref=badge_shield)
 
 Library to reverse search various boorus.
 
@@ -19,3 +20,5 @@ result = asyncio.run(rsearch.reverse_search("https://danbooru.donmai.us/data/__t
 This project is under the GNU LGPLv3 license.
 
 In addition, this project contains a local copy of the aiohttp_requests package (this is to resolve a minor dependency pinning problem aiohttp_requests on pip has). This library is under the MIT. Check the header of the init file for the license.
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnoirscape%2Fretaggr.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnoirscape%2Fretaggr?ref=badge_large)
