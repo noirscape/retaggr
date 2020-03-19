@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Removed E621 engine. (iqdb.harry.lu shut down)
+- Added E621 handler to saucenao.
+- Changed saucenao engine internally to allow for adding handlers easier.
+- Changed response data for engines to allow returning more than one valid source.
+
 ## [2.3.1] - 2019-10-20
 
 - Recover from organization takedown/repo removal.

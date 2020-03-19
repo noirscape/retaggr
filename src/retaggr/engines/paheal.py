@@ -19,7 +19,7 @@ class Paheal(Engine):
 
     async def search_image(self, url):
         tags = []
-        source = None
+        source = []
 
         m = hashlib.md5()
         r = await requests.get(url)
@@ -32,7 +32,7 @@ class Paheal(Engine):
         for post in xml_tree:
             for tag in post.attrib["tags"].split(): 
                 tags.append(tag.lower())
-            source = post.attrib["source"]
+            source.append(post.attrib["source"])
         return ImageResult(tags, source, None)
 
     async def search_tag(self, tag):

@@ -11,7 +11,7 @@ ImageResult = namedtuple("ImageResult", ["tags", "source", "rating"])
 
 .. py:attribute:: source
 
-    The source that has been found for the image.
+    The sources that have been found for the image.
 
 .. py:attribute:: rating
 

@@ -60,7 +60,7 @@ class Iqdb(Engine):
                 pass
             row = row + 6
 
-        return ImageResult(tags, None, None)
+        return ImageResult(tags, [], None)
 
     async def search_tag(self, tag):
         """Reverse search the booru for tag data.

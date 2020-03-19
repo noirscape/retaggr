@@ -27,7 +27,7 @@ class Danbooru(Engine):
 
     async def search_image(self, url):
         tags = []
-        source = None
+        source = []
         rating = None
 
         iqdb_url = self.host + "/iqdb_queries.json"
@@ -41,6 +41,6 @@ class Danbooru(Engine):
         if len(json) > 0:
             if json[0]['score'] > self.min_score:
                 tags = json[0]["post"]["tag_string"].split()
-                source = json[0]["post"]["source"]
+                source.append(json[0]["post"]["source"])
                 rating = json[0]["post"]["rating"]
         return ImageResult(tags, source, rating)

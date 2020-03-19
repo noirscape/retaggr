@@ -9,7 +9,6 @@ from retaggr.config import ReverseSearchConfig
 # Engines
 from retaggr.engines.base import ImageResult
 from retaggr.engines.danbooru import Danbooru
-from retaggr.engines.e621 import E621
 from retaggr.engines.iqdb import Iqdb
 from retaggr.engines.paheal import Paheal
 from retaggr.engines.saucenao import SauceNao
@@ -26,7 +25,7 @@ ReverseResult = namedtuple("ReverseResult", ["tags", "source", "rating"])
 
 .. py:attribute:: source
 
-    The source that has been found for the image.
+    All the sources that have been found for the image.
 
 .. py:attribute:: rating
 
@@ -64,9 +63,6 @@ class ReverseSearch:
             if hasattr(self.config, "danbooru_username") and hasattr(self.config, "danbooru_api_key"):
                 self.accessible_engines["danbooru"] = Danbooru(self.config.danbooru_username, self.config.danbooru_api_key, self.config.min_score)
                 logger.info("Created Danbooru engine")
-            if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
-                self.accessible_engines["e621"] = E621(self.config.e621_username, self.config.app_name, self.config.version, self.config.min_score)
-                logger.info("Created e621 engine")
 
             # IQDB stuff -> we do the check _first_ since someone might not specify this at all, in which case we do still instantiate it.
             if hasattr(self.config, "skip_iqdb") and not self.config.skip_iqdb:
@@ -80,6 +76,9 @@ class ReverseSearch:
         if hasattr(self.config, "saucenao_api_key"):
             self.accessible_engines["saucenao"] = SauceNao(self.config.saucenao_api_key)
             logger.info("Created SauceNao engine")
+            if hasattr(self.config, "e621_username") and hasattr(self.config, "app_name") and hasattr(self.config, "version"):
+                self.accessible_engines["saucenao"].enable_e621(self.config.e621_username, self.config.app_name, self.config.version)
+                logger.info("Activated E621 capabilites on saucenao.")
 
         self.accessible_engines["paheal"] = Paheal()
 
@@ -133,7 +132,7 @@ class ReverseSearch:
             if result.tags:
                 tags.update(result.tags)
             if result.source:
-                source.add(result.source)
+                source.update(result.source)
             if result.rating:
                 rating.add(result.rating)
         return ReverseResult(tags, source, rating)

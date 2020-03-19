@@ -25,17 +25,6 @@ async def test_danbooru():
     assert 'tsukumo_benben' in result.tags
 
 @pytest.mark.asyncio
-async def test_e621():
-    time.sleep(1) # We have to do this, otherwise e621 API blocks us. It's only an issue for testing this here.
-    engine = engines.e621.E621(e621_username, app_name, version, 80.0)
-    try:
-        result = await engine.search_image("https://static1.e621.net/data/2c/1f/2c1f78fb44f50de8fa5d167757953d57.png")
-    except retaggr.EngineIsDown as e:
-        pytest.xfail(f"E621 failed with the following exception: {repr(e)}")
-    assert 'hornet_(hollow_knight)' in result.tags
-
-
-@pytest.mark.asyncio
 async def test_iqdb():
     engine = engines.iqdb.Iqdb(80.0)
     result = await engine.search_image("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg")
@@ -63,6 +52,7 @@ async def test_paheal_tag():
 async def test_saucenao():
     engine = engines.saucenao.SauceNao(saucenao_api_key)
     result = await engine.search_image("https://danbooru.donmai.us/data/__priscilla_the_crossbreed_souls_from_software_and_etc_drawn_by_setz__a3ed9fbb7e972145dfe98269e0be1ace.jpg")
+    print(result)
     assert 'priscilla_the_crossbreed' in result.tags
 
 @pytest.mark.asyncio
