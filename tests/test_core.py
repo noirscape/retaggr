@@ -33,6 +33,12 @@ async def test_core_search_image_not_a_booru():
         await core.search_image("nO", "irrelevant")
 
 @pytest.mark.asyncio
+async def test_core_search_no_download():
+    core = retaggr.ReverseSearch(config)
+    result = await core.reverse_search("https://danbooru.donmai.us/data/__tsukumo_benben_touhou_drawn_by_elise_piclic__6e6da59922b923391f02ba1ce78f9b42.jpg")
+    assert 'tsukumo_benben' in result.tags
+
+@pytest.mark.asyncio
 async def test_core_search_image_not_all_api_keys():
     core = retaggr.ReverseSearch(retaggr.ReverseSearchConfig()) # Since we need a core without the config for this
     with pytest.raises(retaggr.MissingAPIKeysException):
@@ -46,8 +52,8 @@ async def test_image_core():
 
 @pytest.mark.asyncio
 async def test_reverse_search():
-    core = retaggr.ReverseSearch(config)
-    result = await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg")
+    core = retaggr.ReverseSearch(config, True)
+    result = await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg", download=True)
     assert 'dancer_of_the_boreal_valley' in result.tags
 
 @pytest.mark.asyncio
@@ -57,5 +63,5 @@ async def test_reverse_search_callback():
     async def callback(engine, rresult):
         nonlocal calls
         calls += 1
-    await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg", callback=callback)
+    await core.reverse_search("https://iris.paheal.net/_images/f0a277f7c4e80330b843f8002daf627e/1876780%20-%20Dancer_of_the_Boreal_Valley%20Dark_Souls%20Dark_Souls_3%20Sinensian.jpg", callback=callback, download=True)
     assert calls > 0

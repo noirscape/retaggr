@@ -2,6 +2,7 @@
 import asyncio
 from collections import namedtuple
 import logging
+import traceback
 
 # Config
 from retaggr.config import ReverseSearchConfig
@@ -12,6 +13,7 @@ from retaggr.engines.danbooru import Danbooru
 from retaggr.engines.iqdb import Iqdb
 from retaggr.engines.paheal import Paheal
 from retaggr.engines.saucenao import SauceNao
+from retaggr.engines.dummy import Dummy
 
 # Exceptions
 from retaggr.errors import MissingAPIKeysException, NotAValidEngineException, EngineCooldownException
@@ -46,6 +48,8 @@ class ReverseSearch:
     :ivar accessible_engines: The accessible boorus from the passed in configuration object.
     :param config: The config object.
     :type config: ReverseSearchConfig
+    :param test_mode: Enable test mode. Test mode adds two dummy engines that can fail as well as return some very basic values.
+    :type test_mode: bool
     """
     _all_engines = [
         "danbooru",
@@ -55,7 +59,7 @@ class ReverseSearch:
         "saucenao"
         ]
 
-    def __init__(self, config):
+    def __init__(self, config, test_mode=False):
         self.config = config
         self.accessible_engines = {}
 
@@ -65,7 +69,7 @@ class ReverseSearch:
                 logger.info("Created Danbooru engine")
 
             # IQDB stuff -> we do the check _first_ since someone might not specify this at all, in which case we do still instantiate it.
-            if hasattr(self.config, "skip_iqdb") and not self.config.skip_iqdb:
+            if hasattr(self.config, "skip_iqdb") and self.config.skip_iqdb:
                 skip_iqdb = True
             else:
                 skip_iqdb = False
@@ -81,6 +85,12 @@ class ReverseSearch:
                 logger.info("Activated E621 capabilites on saucenao.")
 
         self.accessible_engines["paheal"] = Paheal()
+
+        if test_mode:
+            self.accessible_engines["dummy"] = Dummy(False)
+            self.accessible_engines["fail_dummy"] = Dummy(True)
+            self._all_engines.append("dummy")
+            self._all_engines.append("fail_dummy")
 
     async def reverse_search(self, url, callback=None, download=False):
         """
@@ -126,8 +136,10 @@ class ReverseSearch:
             tasks.append(self._gather_reverse_task(engine, url, callback))
         results = await asyncio.gather(*tasks)
         for result in results:
-            if isinstance(result, Exception): # Engine failed
-                logger.warning("[%s] An engine has failed!")
+            if isinstance(result, Exception): # pragma: no cover
+                logger.warning("[%s] An engine has failed!", url)
+                logger.warning("[%s] This may or may not be an issue. Report it on the issue tracker: https://github.com/noirscape/retaggr/issues if the issue persists.", url)
+                traceback.print_exc()
                 continue
             if result.tags:
                 tags.update(result.tags)

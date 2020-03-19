@@ -64,6 +64,7 @@ class SauceNao(Engine):
             KonachanHandler.engine_id : KonachanHandler(),
             YandereHandler.engine_id : YandereHandler(),
         }
+        self.test_mode = test_mode
 
     def enable_e621(self, username, app_name, version):
         """Activate the E621 parser."""
@@ -77,12 +78,22 @@ class SauceNao(Engine):
             "output_type": "2", # 2 is the JSON API,
             "url": url
         }
+
+        if self.test_mode:
+            params = {
+                "db": "999",
+                "output_type": "2",
+                "testmode": "1",
+                "numres": "16",
+                "url": "http://saucenao.com/images/static/banner.gif"
+            }
+
         loop = asyncio.get_event_loop()
         r = await loop.run_in_executor(None, functools.partial(fuck_aiohttp.get, request_url, params=params))
         j = r.json()
         if r.status_code == 200:
             return await self.index_parser(j)
-        elif r.status_code == 429: 
+        elif r.status_code == 429: # pragma: no cover
             raise EngineCooldownException()
 
     async def search_tag(self, tag):
@@ -102,13 +113,18 @@ class SauceNao(Engine):
         # Damn API inaccuracy
         valid_results = [entry for entry in json["results"] if float(entry["header"]["similarity"]) > base_similarity]
 
+        # Test mode similarity override
+        if self.test_mode:
+            valid_results = json["results"]
+
         # Kinda looks stupid, but whatever.
         loop = asyncio.get_event_loop()
         source = set()
         tags = set()
         for entry in valid_results:
-            for url in entry["data"]["ext_urls"]:
-                source.add(url)
+            if "ext_urls" in entry["data"]: # Some of these responses dont have ext_url...
+                for url in entry["data"]["ext_urls"]:
+                    source.add(url)
             handler = self.handlers.get(entry["header"]["index_id"], None)
             if handler:
                 if handler.tag_capable:

@@ -39,7 +39,7 @@ class Iqdb(Engine):
         row = 6
         while row < len(tables):
             # Percent similair
-            if (tables[row].text) is None:
+            if (tables[row].text) is None: # pragma: no cover
                 row = row + 6
                 continue
             try:

@@ -14,8 +14,7 @@ danbooru_api_key = os.environ.get('DANBOORU_API_KEY', None)
 e621_username = os.environ.get('E621_USERNAME', None)
 app_name = os.environ.get('APP_NAME', None)
 version = os.environ.get('APP_VERSION', None)
-saucenao_api_key = os.environ.get('SAUCENAO_API_KEY', None)
-if not all([danbooru_username, danbooru_api_key, e621_username, app_name, version, saucenao_api_key]):
+if not all([danbooru_username, danbooru_api_key, e621_username, app_name, version]):
     raise ValueError("Missing Environment variables")
 
 @pytest.mark.asyncio
@@ -45,18 +44,5 @@ async def test_paheal():
 @pytest.mark.asyncio
 async def test_paheal_tag():
     engine = engines.paheal.Paheal()
-    with pytest.raises(retaggr.NotAvailableSearchException):
-        await engine.search_tag("doesnt matter")
-
-@pytest.mark.asyncio
-async def test_saucenao():
-    engine = engines.saucenao.SauceNao(saucenao_api_key)
-    result = await engine.search_image("https://danbooru.donmai.us/data/__priscilla_the_crossbreed_souls_from_software_and_etc_drawn_by_setz__a3ed9fbb7e972145dfe98269e0be1ace.jpg")
-    print(result)
-    assert 'priscilla_the_crossbreed' in result.tags
-
-@pytest.mark.asyncio
-async def test_saucenao_tag():
-    engine = engines.saucenao.SauceNao(saucenao_api_key)
     with pytest.raises(retaggr.NotAvailableSearchException):
         await engine.search_tag("doesnt matter")

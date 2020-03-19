@@ -11,10 +11,10 @@ class SauceNaoHandler:
     tag_capable = False
     source_capable = False
 
-    async def get_tag_data(self, data) -> Set[str]:
+    async def get_tag_data(self, data) -> Set[str]: # pragma: no cover
         """Get all the tags matching the supplied data."""
         pass
 
-    async def get_source_data(self, data) -> Set[str]:
+    async def get_source_data(self, data) -> Set[str]: # pragma: no cover
         """Extract the source from the supplied data."""
         pass
