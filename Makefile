@@ -24,7 +24,7 @@ clean-build: clean build ## Remove the build directory and build the package
 
 test: ## Run the tests
 	@printf "$(bold)Running tests$(sgr0)\n"
-	py.test --cov=src --cov-config=.coveragerc --cov-report term-missing --cov-report html -W ignore::DeprecationWarning
+	py.test --cov=src --cov-config=.coveragerc -W ignore::DeprecationWarning
 
 clean-test: clean test ## Cleanup execution files, then run the tests
 
