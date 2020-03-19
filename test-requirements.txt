@@ -1,4 +1,4 @@
 pytest-cov
 pytest-asyncio
 pytest
-python-coveralls
+coveralls
