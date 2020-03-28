@@ -3,7 +3,7 @@ import subprocess
 
 setup(
     name="retaggr",
-    version="2.3.1",
+    version="3.0.0",
     url="https://github.com/noirscape/reverse-search",
     license="LGPLv3",
     description="Reverse image searching utility for images.",
