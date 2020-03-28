@@ -7,8 +7,14 @@ from .base import SauceNaoHandler
 
 class KonachanHandler(SauceNaoHandler):
     engine_id = 26
+    """"""
+
     tag_capable = True
+    """"""
+
     source_capable = False
+    """"""
+
 
     async def get_tag_data(self, data):
         loop = asyncio.get_event_loop()

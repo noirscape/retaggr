@@ -29,3 +29,4 @@ Table of contents
    config
    engines
    exceptions
+   handlers

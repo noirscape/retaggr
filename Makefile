@@ -32,5 +32,9 @@ dist: clean build ## Remove build directories, build the package, and run twine
 	@printf "$(bold)Uploading distribution$(sgr0)\n"
 	twine upload dist/*
 
+docs: clean
+	@printf "$(bold)Building docs$(sgr0)\n"
+	cd docs && $(MAKE) html coverage
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

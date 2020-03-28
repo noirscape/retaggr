@@ -6,6 +6,16 @@
 Welcome to retaggr's documentation!
 ================================================
 
+Library to reverse search various boorus.
+
+.. code-block:: python
+
+    from retaggr import ReverseSearch, ReverseSearchConfig
+    config = ReverseSearchConfig(min_score=80.0)
+    rsearch = ReverseSearch(config)
+
+Check the :ref:`user` page for more.
+
 .. toctree::
    :maxdepth: 3
    :caption: Contents:

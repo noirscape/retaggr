@@ -17,8 +17,8 @@ sys.path.insert(0, os.path.abspath("../src"))
 # -- Project information -----------------------------------------------------
 
 project = 'retaggr'
-copyright = '2019, noirscape, colin969'
-author = 'noirscape, colin969'
+copyright = '2020, noirscape'
+author = 'noirscape'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0a'

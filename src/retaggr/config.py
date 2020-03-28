@@ -13,9 +13,9 @@ class ReverseSearchConfig:
     :param e621_username: Your :class:`E621` username
     :type e621_username: str
 
-    :param app_name: The name of your application (required for :class:`E621`).
+    :param app_name: The name of your application (required for the e621 handler in :class:`SauceNao`).
     :type app_name: str
-    :param version: The version of your application (required for :class:`E621`).
+    :param version: The version of your application (required for the e621 handler in :class:`SauceNao`).
     :type version: float
 
     :param saucenao_api_key: An API key for :class:`SauceNao`.

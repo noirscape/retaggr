@@ -21,42 +21,6 @@ class SauceNao(Engine):
     host = "https://saucenao.com"
     download_required = False
 
-
-    tag_indexes = set([9, 12, 26, 29])
-    """Tag indexes we can parse.
-
-    Valid index numbers can be found at https://saucenao.com/status.html .
-
-    List of indexes we can parse for tags:
-
-    * 9: Danbooru
-    * 12: Yande.re
-    * 26: Konachan
-    * 29: E621
-    """
-
-    source_indexes = [5, 16, 29, 37, 34]
-    """List of source indexes in preferred order (key 0 is preferred, last key is least preferred).
-    
-    Valid index numbers can be found at https://saucenao.com/status.html .
-
-    List of indexes we use for sources:
-
-    * 5: Pixiv (preferred, low quantity/risk of reuploads)
-    * 16: FAKKU (official redistribution)
-    * 37: MangaDex (not official redistribution, but metadata is accurate)
-    * 34: DeviantART (not preferred, large number of art theft and reuploads)
-    """
-
-    indirect_source_indexes = [29]
-    """List of indirect source indexes.
-
-    There is no preferred order.
-
-    Some of these may require extra steps to obtain the source.
-
-    * 29: E621
-    """
     def __init__(self, api_key, test_mode=False):
         self.api_key = api_key
         self.handlers = {
@@ -67,7 +31,15 @@ class SauceNao(Engine):
         self.test_mode = test_mode
 
     def enable_e621(self, username, app_name, version):
-        """Activate the E621 parser."""
+        """Enable the E621 parser. This allows for looking up tag information on E621.
+        
+        :param username: An E621 username.
+        :type username: str
+        :param app_name: The name of the application.
+        :type app_name: str
+        :param version: The version of the appliation.
+        :type version: str
+        """
         self.handlers[E621Handler.engine_id] = E621Handler(username, app_name, version)
 
     async def search_image(self, url):

@@ -7,8 +7,13 @@ from .base import SauceNaoHandler
 
 class YandereHandler(SauceNaoHandler):
     engine_id = 12
+    """"""
+
     tag_capable = True
+    """"""
+
     source_capable = False
+    """"""
 
     async def get_tag_data(self, data):
         loop = asyncio.get_event_loop()

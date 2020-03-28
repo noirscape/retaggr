@@ -18,12 +18,6 @@ Danbooru
 .. autoclass:: retaggr.engines.Danbooru
     :members:
 
-E621
-------
-
-.. autoclass:: retaggr.engines.E621
-    :members:
-
 Iqdb
 ------
 

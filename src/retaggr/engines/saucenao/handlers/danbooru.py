@@ -7,8 +7,14 @@ from .base import SauceNaoHandler
 
 class DanbooruHandler(SauceNaoHandler):
     engine_id = 9
+    """"""
+
     tag_capable = True
+    """"""
+
     source_capable = True
+    """"""
+
 
     async def get_tag_data(self, data):
         loop = asyncio.get_event_loop()

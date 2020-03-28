@@ -9,8 +9,14 @@ from retaggr.aiohttp_requests import requests
 
 class E621Handler(SauceNaoHandler):
     engine_id = 29
+    """"""
+
     tag_capable = True
+    """"""
+
     source_capable = True
+    """"""
+
 
     last_request = None
 
