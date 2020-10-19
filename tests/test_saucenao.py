@@ -25,6 +25,20 @@ async def test_danbooru():
     assert "persona" in answer
 
 @pytest.mark.asyncio
+async def test_gelbooru_tags():
+    handler = handlers.GelbooruHandler()
+    data = {"gelbooru_id": 5572304}
+    answer = await handler.get_tag_data(data)
+    assert "helltaker" in answer
+
+@pytest.mark.asyncio
+async def test_gelbooru_source():
+    handler = handlers.GelbooruHandler()
+    data = {"gelbooru_id": 5572304}
+    answer = await handler.get_source_data(data)
+    assert "https://twitter.com/mugenjin/status/1309972603910586369" in answer
+
+@pytest.mark.asyncio
 async def test_e621_tags():
     handler = handlers.E621Handler(e621_username, app_name, version)
     data = {"e621_id": 2174881}

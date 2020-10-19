@@ -3,7 +3,7 @@ import asyncio
 import functools
 
 from retaggr.engines.base import Engine, ImageResult
-from retaggr.engines.saucenao.handlers import DanbooruHandler, E621Handler, KonachanHandler, YandereHandler
+from retaggr.engines.saucenao.handlers import DanbooruHandler, GelbooruHandler, E621Handler, KonachanHandler, YandereHandler
 from retaggr.errors import NotAvailableSearchException, EngineCooldownException
 import requests as fuck_aiohttp
 
@@ -25,6 +25,7 @@ class SauceNao(Engine):
         self.api_key = api_key
         self.handlers = {
             DanbooruHandler.engine_id : DanbooruHandler(),
+            GelbooruHandler.engine_id : GelbooruHandler(),
             KonachanHandler.engine_id : KonachanHandler(),
             YandereHandler.engine_id : YandereHandler(),
         }

@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2020-10-19
+
+- Added Gelbooru handler to saucenao.
+
+## [3.0.0] - 2020-03-29
+
 - Removed E621 engine. (iqdb.harry.lu shut down)
 - Added E621 handler to saucenao.
 - Changed saucenao engine internally to allow for adding handlers easier.
@@ -85,7 +91,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added sample `test.sh` for testing purposes.
 - Fixed reverse_search to skip saucenao if on long ratelimit in reverse_search
 
-
 ## [1.2.0] - 2019-08-29
 
 - Expanded base engine class to also permit searching for sources.
@@ -118,7 +123,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added core class
 - Added config class
 
-[Unreleased]: https://github.com/noirscape/retaggr/compare/2.3.1...HEAD
+[Unreleased]: https://github.com/noirscape/retaggr/compare/3.0.1...HEAD
+[3.0.0]: https://github.com/noirscape/retaggr/compare/3.0.0...2.3.1
 [2.3.1]: https://github.com/noirscape/retaggr/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/noirscape/retaggr/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/noirscape/retaggr/compare/2.1.4...2.2.0
