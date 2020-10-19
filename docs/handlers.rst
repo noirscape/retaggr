@@ -16,6 +16,13 @@ Danbooru
     :members:
 
 
+Gelbooru
+-----
+
+.. autoclass:: GelbooruHandler
+    :members:
+
+
 e621
 -----
 

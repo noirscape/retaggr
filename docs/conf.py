@@ -17,11 +17,21 @@ sys.path.insert(0, os.path.abspath("../src"))
 # -- Project information -----------------------------------------------------
 
 project = 'retaggr'
-copyright = '2020, noirscape'
+copyright = '2019-2020, noirscape'
 author = 'noirscape'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.0a'
+from retaggr import version_info
+def get_tag(releaselevel):
+    d = {
+        "alpha": "a",
+        "beta": "b",
+        "candidate": "rc",
+        "final": ""
+    }
+    return d[releaselevel]
+
+release = "{}.{}.{}{}".format(version_info.major, version_info.minor, version_info.micro, get_tag(version_info.releaselevel))
 
 
 # -- General configuration ---------------------------------------------------
